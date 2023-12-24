@@ -1,0 +1,95 @@
+{% from 'components/users.html' import rideOption %}
+{% from 'components/general.html' import customButton %}
+{% from 'icons.html' import circle_check, circle_xmark %}
+
+{% set title_text = 'Uber Admin' %}
+
+{% extends 'admin_layout.html' %}
+
+{% block admin_content %}
+
+<div class="lg:p-12 lg:px-24 flex flex-col gap-4">
+ 
+
+
+        {% if driver_application.status=='pending' %}
+          <div class="flex gap-3"> 
+          
+            {{ customButton(_("Accept"), hx_props={
+              'hx-post': url_for('inter.admin.accept_driver_application', driver_id=driver_application._id),
+              'hx-select': '#page-content',
+              'hx-target': '#page-content', 
+            }) }}
+            {{ customButton(_('Reject'), variant='super-light', hx_props={
+              'hx-post': url_for('inter.admin.reject_driver_application', driver_id=driver_application._id),
+              'hx-select': '#page-content',
+              'hx-target': '#page-content',
+
+            }) }}
+
+          </div>
+
+        {% else %}
+
+          <span class="font-semibold text-xl"> {{ _("Handled by") }} {{ admin_handler.fname}} <span class="text-gray-300">({{ admin_handler.email }})</span></span>
+
+          <span class="flex gap-3 items-center">
+            {% if driver_application.status == 'accepted' %}
+              {{ circle_check() }}
+              {{ _("Accepted") }}
+            {% elif driver_application.status == 'rejected' %}
+              {{ circle_xmark()  }}
+              {{ _("Rejected") }}
+            {% endif %}
+        </span>
+            
+        {% endif %}
+
+        <div class="flex flex-col">
+          <span class="font-bold text-lg">{{ _("Driver Info") }}</span>
+          <span class="text-gray-500">{{ _("Name") }}: {{ driver_application.user.display_name() }}</span>
+          <span class="text-gray-500">{{ _("Email") }}: {{ driver_application.user.email }}</span>
+          {% if driver_application.user.phone %}
+          <span class="text-gray-500">{{ _("Phone") }}: {{ driver_application.user.phone }}</span>
+          {% endif %}
+        </div>
+
+        <div class="flex flex-col">
+        <span class="font-bold text-lg">{{ _("License Info") }}</span>
+          <span class="text-gray-500">{{ _("License Number") }}: {{ driver_application.license_number }}</span>
+          <span class="text-gray-500">{{ _("License Expiry Date") }}: {{ driver_application.license_expiry_date }}</span>
+          <div class="w-full">
+            <p class="text-gray-500">{{ _("License Photo") }}</p>
+          <img  class="rounded-xl max-h-60 mx-auto" src="{{ url_for('inter.account.view_driver_license', driver=driver_application.user.id, file_id=driver_application.license_photo) }}">
+          </div>
+        </div>
+
+        <div class="flex flex-col">
+          <span class="font-bold text-lg mt-5">{{ _("Vehicle Info") }}</span>
+          <span class="text-gray-500">{{ _("Vehicle Plate") }}: {{ driver_application.vehicle_plate }}</span>
+          <div class="w-full">
+            <p class="text-gray-500">{{ _("Vehicle Photo") }}: </p>
+            <img  class="rounded-xl max-h-60 mx-auto" src="{{ url_for('inter.account.view_driver_vehicle',driver=driver_application.user.id, file_id=driver_application.vehicle_photo) }}">
+          </div>
+        </div>
+       
+
+        <span class="font-bold text-lg mt-5">{{ _("Vehicle Class") }}</span>
+        {{ rideOption(ride_option, is_rider=false)}}
+
+
+</div>
+
+    
+<script>
+
+    // var adminNS = io('/admin', {'transports': ['websocket']});
+    // adminNS.on('driver-application-response', function(data){
+    //     console.log(data)
+    //     document.body.innerHTML += data
+    // })  
+
+
+</script>
+{% endblock admin_content %}
+

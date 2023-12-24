@@ -1,0 +1,66 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'icons.html' import circle_xmark, arrow, paymethod_card, paypal, star %}
+{% from 'components/general.html' import customButton  %}
+
+{% extends 'templates/users_layout.html' %}
+
+{% block page_content %}
+
+    {% if paymethod.method == 'paypal' %}
+        {% set header = 'PayPal' %}
+        {% set icon = paypal(height="h-[42px]", width="w-[42px]") %}
+    {% elif paymethod.method == 'card' %}
+        {% set header = _("Credit or Debit Card") %}
+        {% set icon = paymethod_card() %}
+        
+    {% endif %}
+
+
+    <div class="p-8 col-span-full md:p-0 md:col-start-3 md:col-end-10 flex flex-col gap-y-4">
+
+        <a 
+        href="{{ url_for('inter.account.wallet') }}" hx-target="#page-content"  hx-select="#page-content" hx-swap="outerHTML show:body:top"
+      >
+      {{ customButton('', variant='super-light', classes="w-fit rounded-full h-12 w-10 items-center justify-center", icon_svg=arrow(width=14, height=14, view=24, classes="rotate-180"), as_submit=false) }}
+      </a>
+        <div class="flex justify-between w-full">
+            <h3 class="font-bold text-3xl">{{ header }}</h3>
+            {{ icon }}
+        </div>
+
+        <div id="method-container" class="flex flex-col gap-4">
+
+            {% if paymethod.is_starred %}
+
+            <div class="flex bg-blue-50 p-4 rounded-md items-center"> 
+                <span class="pr-4 font-medium">{{ star() }}</span>
+                <span class="w-full">{{ _("Preferred Payment Method") }}</span>
+            </div>
+                
+            {% endif %}
+
+
+            <div  hx-get="{{ url_for('inter.account.remove_payment_method', paymethod=paymethod._id) }}" 
+            hx-target="#modal-bg"
+            hx-swap="outerHTML"
+            class="flex items-center cursor-pointer p-4 rounded-md hover:bg-slate-200 text-red-500">
+                <span class="pr-4 font-medium">{{ circle_xmark() }}</span>
+                <span class="w-full">{{ _("Remove payment method") }}</span>
+            </div>
+
+            {% if not paymethod.is_starred %}
+                
+                <div  hx-patch="{{ url_for('inter.account.handle_payment_method', paymethod=paymethod._id )}}" 
+                hx-target="#method-container"
+                hx-select="#method-container"
+                hx-swap="outerHTML"
+                class="flex cursor-pointer p-4 items-center">
+                    <span class="pr-4 font-medium">{{ star() }}</span>
+                    <span class="w-full">{{ _("Use as preferred") }}</span>
+                </div>
+
+            {% endif %}
+
+    </div>
+
+{% endblock page_content %}

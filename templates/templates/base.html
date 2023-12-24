@@ -1,0 +1,89 @@
+{% from 'components/modal.html' import modalBG %}
+{% from 'components/notifs.html' import notif %}
+{% from 'components/general.html' import title %}
+{% from 'components/auth.html' import auth_navbar %}
+<!DOCTYPE html>
+<html lang="{{ g.get('lang', 'en')}}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}"></link>
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles-output.css') }}"></link> -->
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+           
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}">
+
+        <!-- HTMX -->
+        <script src="{{ url_for('static', filename='scripts/htmx/htmx.js') }}"></script>
+        <script src="{{ url_for('static', filename='scripts/htmx/class-tools.js') }}"></script>
+        <script src="{{ url_for('static', filename='scripts/htmx/multi-swap.js') }}"></script>
+        <script src="{{ url_for('static', filename='scripts/htmx/preload.js') }}"></script>
+        <script src="{{ url_for('static', filename='scripts/htmx/response-targets.js') }}"></script>
+        <!-- <script src="{{ url_for('static', filename='scripts/htmx/ws.js') }}"></script> -->
+
+        <!-- SOCKEITIO -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
+        <!-- MAP LIBRE GL -->
+        <script src="https://tiles.locationiq.com/v3/libs/maplibre-gl/1.15.2/maplibre-gl.js"></script>
+        <link href="https://tiles.locationiq.com/v3/libs/maplibre-gl/1.15.2/maplibre-gl.css" rel="stylesheet" />
+        <script src="https://tiles.locationiq.com/v3/js/liq-styles-ctrl-libre-gl.js?v=0.1.8"></script>
+        <link href="https://tiles.locationiq.com/v3/css/liq-styles-ctrl-libre-gl.css?v=0.1.8" rel="stylesheet" />
+
+        <!-- MAP.JS -->
+        <script type="text/javascript" src="{{url_for('static', filename='scripts/maps/polyline.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='scripts/maps/map.js')}}"></script>
+        
+        <!--  OTHER-->
+        <script type="text/javascript" src="{{url_for('static', filename='scripts/flowbite-datepicker.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='scripts/main.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='scripts/defer.js')}}" defer></script>
+        <!-- <script type="text/javascript" src="{{url_for('static', filename='scripts/s-events.js')}}"></script> -->
+       
+        {{ title(title_text) }}
+
+    </head>
+
+    <body hx-boost="true" hx-ext="response-targets,class-tools,multi-swap,preload">
+        <div class="htmx-base-indicator absolute top-0 h-[2px] w-32 bg-blue-500 z-[80]"></div>
+
+        <noscript >
+            <div class="fixed inset-0 bg-white z-[100]">
+            {{ auth_navbar() }}
+                <div class="flex items-center justify-center h-full" >
+                    <div class="flex flex-col gap-y-4 items-center">
+                        <h1 class="text-2xl font-bold">Javascript is disabled</h1>
+                        <p class="text-sm">Please enable Javascript to for a great user experience.</p>
+                    </div>
+                </div>  
+            </div>
+        </noscript>
+
+        <div id="messages"  class="fixed w-full z-[70]"> 
+            {% with messages = get_flashed_messages(with_categories=true) -%}
+                {% if messages -%}
+                    {% for category, message in messages -%}
+                        {{ notif(message, category) }}
+                    {%- endfor %}
+                {%- endif %}
+            {%- endwith %}
+        </div>
+
+
+        {% if modal %}
+            {{ modal }}
+         {% else %}
+            {{ modalBG(false) }}
+        {% endif %}
+
+        <div class="relative h-full w-full">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </body>
+</html>

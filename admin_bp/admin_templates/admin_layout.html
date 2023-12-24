@@ -1,0 +1,15 @@
+
+{% from 'admin_components.html' import admin_navbar with context %}
+{% extends 'templates/base.html' %}
+
+{% block content %}
+
+    {{ admin_navbar() }}
+    
+    <div id="page-content" class="h-fit flex pt-6 justify-center items-center z-20">
+        {% block admin_content %}
+
+        {% endblock admin_content %}
+    </div>
+   
+{% endblock content %}

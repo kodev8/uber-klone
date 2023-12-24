@@ -1,0 +1,27 @@
+{% from 'icons.html' import paypal, cash, paymethod_card, caret_down %}
+{% from 'components/general.html' import customButton %}
+
+{% set hx_props={
+    "hx-get":url_for('inter.riders.payment_method'),
+    "hx-target":"#modal-bg",
+    "hx-swap":"outerHTML",
+    "hx-trigger":"click",
+    "hx-target-4*":"#messages"}  %}
+
+    
+{% if paymethod.method == 'paypal' %}
+    {% set icon = paypal() %}
+    {% set text = paymethod.email %}
+{% elif paymethod.method == 'card' %}
+    {% set icon = paymethod_card() %}
+    {% set text = "xxxx-xxxx-xxxx-"+paymethod.card_number[-4:] %}
+{% elif paymethod.method == 'cash' %}
+    {% set icon = cash() %}
+    {% set text = 'Cash' %}
+    
+{% endif %}
+
+<div id="paymethod-data" class="w-full">
+    {{ customButton(text, variant='super-light', icon_svg=icon, icon_svg_right=caret_down(), hx_props=hx_props, as_submit=false)}}
+    <input type="hidden" name="paymethod" value="{{ paymethod._id }}" id="paymethod">
+</div>

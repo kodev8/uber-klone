@@ -1,0 +1,62 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'icons.html' import pickup, destination, clock, caret_down, circle_xmark, arrow, person %}
+{% from 'components/general.html' import customButton  %}
+{% from 'account_components.html' import tripTab %}
+
+{% set onerow = true %}
+{% extends 'templates/users_layout.html' %}
+
+{% block page_content %}
+
+    <div class="col-span-full lg:p-12 lg:px-24 flex flex-col w-full">
+        <h1 class="text-3xl font-bold">{{ _("Past") }}</h1>
+        <div id="trip-nav" class="flex relative w-full gap-4 my-6 pb-3 font-semibold text-xl">
+            <span id="trip-nav-indicator" class="h-1 bg-black w-24 absolute bottom-0 {% if current_user.has_role('driver') and riding =='driver' %} translate-x-28 {% else %} translate-x-0 {% endif %} duration-150 transition-transform"></span>
+           
+            <span   
+            hx-get="{{ url_for('inter.account.trips', riding='rider') }}"
+            hx-swap="multi:#trip-nav-indicator:outerHTML,#trip-data"
+            class="cursor-pointer">
+                {{ _("Rider Trips") }}
+            </span>
+
+            {% if current_user.has_role('driver') %}
+                <span 
+                hx-get="{{ url_for('inter.account.trips', riding='driver') }}" 
+                hx-swap="multi:#trip-nav-indicator:outerHTML,#trip-data"
+                class="cursor-pointer">
+                    {{ _("Driver Trips") }}
+                </span>
+            {% endif %}
+        </div>
+
+        <div id="trip-data" class="grid lg:grid-cols-2 gap-4">
+
+            {% if all_trips %}
+                
+                {% for trip in all_trips  %}
+
+                    {{ tripTab(trip, riding) }}
+                    
+                {% endfor %}
+
+            {% else %}
+
+                <div class="">
+                    <button class="flex items-stretch rounded-lg flex-col overflow-hidden relative w-full text-start cursor-pointer border-red-500 border-solid">
+                        <div class="bg-center bg-cover bg-[url('/static/assets/ride-bg.svg')] h-[132px] w-full"></div>
+                        <div class="w-full py-6 pl-2">
+                            <span class="font-semibold">{{ _("No trips here at the moment") }}</span>
+                        </div>
+                    </button>
+                </div>
+            {% endif %}
+
+        
+
+
+
+        </div>
+    </div>
+
+{% endblock page_content %}

@@ -1,0 +1,29 @@
+{% from './components/forms.html' import customInput %} 
+{% extends 'templates/auth_layout.html' %} 
+
+  {% if code == 405%}
+      {% set color = 'text-orange-300' %}
+
+  {% else %}
+
+      {% set color = 'text-red-500' %}
+      
+  {% endif %}
+  {% block auth_content %}
+
+    <div class="grid  grid-rows-2 lg:grid-rows-1 lg:grid-cols-2 h-fit">
+      <div class="row-start-2 lg:row-start-1 flex items-center flex-col justify-center {{ color }} gap-y-8 m-12">
+        <span class="font-extrabold text-9xl">{{ code }}</span>
+        <span class="font-bold text-4xl">{{ message }}<i class="fa-solid fa-user-xmark ml-4"></i></span>
+        {% if sub_message %}
+          <span>You should be automatically redirected to the home page! if not click <a href="{{ url_for('inter.general.index') }}" class="underline">here</a></span>
+        {% endif %}
+      </div>
+
+      <div class="row-start-1 lg:row-start-1 overflow-hidden">
+        <img src="{{ url_for('static', filename='assets/error.webp') }}" alt="{{ code }}" class="object-fit lg:max-h-[80%] max-w-[450px]">
+      </div>
+
+  </div>
+
+{% endblock auth_content %}

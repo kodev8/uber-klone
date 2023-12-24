@@ -1,0 +1,165 @@
+{% from 'components/general.html' import customButton %}
+{% from 'icons.html' import menu_bar, uber, lifebuoy, car_front, caret_down, settings, receipt, wallet, person, arrow, circle_check, circle_xmark %}
+
+
+{% macro navbar() %}
+    <nav id="navbar" class="w-full col-span-full relative flex pt-6 pb-2 px-6 sm:px-16 justify-between bg-white border-b-4 border-gray-300">
+
+        <div id="left-nav" class="flex gap-x-2 items-center">
+            <a href="{{ url_for('inter.general.index') }}" class="px-6 lg:px-12">{{ uber(fill="#000000") }}</a>
+            <a href="{{ url_for('inter.riders.index') }}" hx-boost="false" class="hidden lg:flex gap-x-2 font-bold items-center
+            after:h-1 after:w-16 after:absolute after:top-[100%] after:bg-black
+            ">{{ car_front() }}<span>{{ _("Trip") }}</span></a>
+
+        </div>
+
+        <div id="right-nav" class="flex gap-x-6 items-center">
+            <a class="hidden lg:flex gap-x-2 font-bold items-center">{{ lifebuoy() }}<span>{{ _("Help") }}</span></a>
+
+            <div id="user-info" class="flex items-center gap-x-2 relative h-full">
+                <img src="{{ url_for('static', filename='assets/default-user.jpeg') }}"  class="rounded-full object-cover h-10 w-10"/>
+                <span>{{ caret_down() }}</span>
+
+
+                <div id="user-dropdown" class="absolute top-[100%] right-0 invisible overflow-hidden pt-3 z-10 shadow-lg rounded-md bg-transparent">
+                    <div class="flex flex-col gap-y-2 min-w-[200px] bg-[#eeeeee] z-20 rounded-md [&>*:first-child]:rounded-t-md [&>*:last-child]:rounded-b-md " >
+                        <a href="{{ url_for('inter.account.trips') }}" class="flex items-center gap-x-6 py-3 px-4 hover:bg-[#f6f6ff] hover:cursor-pointer"><span>{{ receipt()}}</span>{{ _("My Trips") }}</a>
+                        <a href="{{ url_for('inter.account.wallet') }}" class="flex items-center gap-x-6 py-3 px-4 hover:bg-[#f6f6ff] hover:cursor-pointer"><span>{{ wallet()}}</span>{{ _("Wallet") }}</a>
+                        <a href="{{ url_for('inter.account.manage') }}" class="flex items-center gap-x-6 py-3 px-4 hover:bg-[#f6f6ff] hover:cursor-pointer"><span>{{ person() }}</span>{{ _("Manage Account") }}</a>
+                        <a href="{{ url_for('inter.account.settings') }}" class="flex items-center gap-x-6 py-3 px-4 hover:bg-[#f6f6ff] hover:cursor-pointer"><span>{{ settings()}}</span>{{ _("Settings") }}</a>          
+                    </div>
+                </div>
+            </div>
+            <span class="lg:hidden">{{ menu_bar(fill="#000000") }}</span>
+
+            <script>
+                linkHoverShow(document.querySelector("#user-info"), document.querySelector('#user-dropdown'))
+            </script>
+        </div>
+        
+    </nav>     
+
+{% endmacro %}
+
+
+
+{% macro rideOption(option, is_rider=true, is_checked=false) %}
+    <input type="radio" name="ride-option" id="{{ option.id }}" value="{{ option.id }}" class="peer/{{option.id}} hidden" {% if is_checked %}checked{% endif %}/>
+    <label {% if is_rider %} onclick="updateRide('{{option.name }}')"   {% endif %} for="{{ option.id }}"
+  
+    class="border-2 border-transparent cursor-pointer peer-checked/{{option.id}}:border-black rounded-lg flex px-6 gap-x-6  items-center">
+            <img src="{{ url_for('static', filename='assets/ride-options/' + option.image) }}" class="h-[124px]" style="
+                overflow-clip-margin: content-box;
+                overflow: clip;
+            ">
+        <div class="flex flex-col">
+            <span class="font-bold flex gap-2 items-baseline text-2xl">
+                {{ option.name }} 
+                <span class="font-normal text-xs inline-flex">{{ person() }} {{ option.capacity }} </span> 
+            </span>
+            <span class="text-sm text-gray-400">{{ option.description }}</span>
+        </div>
+
+        {% if is_rider %}
+            <div class="ml-auto">
+                <span class="font-bold text-2xl">{{ option.price | format_currency }}</span>
+            </div>
+        {% endif %}
+        
+    </label>
+    
+{% endmacro %}
+
+
+{% macro availableRider(rider) %}
+{# rider is instance of user merged with trip info #}
+
+<div id="{{rider._id}}" class="available-rider">
+    <input type="radio" name="available-rider" id="{{ rider.user.id }}" class="peer/{{rider.user.id}} hidden" />
+    <label   for="{{ rider.user.id }}"
+    onclick="fetchAndDrawFromElt(this)"
+    class="border-2 border-transparent border-b-gray-200 peer-checked/{{rider.user.id}}:border-black rounded-lg flex px-6 py-4 gap-x-6  items-center cursor-pointer">
+        <div class="">
+            <img
+                class="rounded-[50%] h-12 w-12 object-cover  place-self-center flex items-center justify-center"
+                src="{% if rider.user.profile_pic %}{{ url_for('profile_upload', filename=rider.user.build_path('profile', 'profile.png')) }}{% else %}{{ url_for('static', filename='assets/default-user.jpeg') }}{% endif %}"
+                alt=""
+                />
+        </div>
+        <div class="flex flex-col">
+            <span class="font-bold flex gap-2 items-baseline text-2xl">
+              {{ rider.user.display_name() }}
+
+            </span>
+            <div class="flex items-center  gap-x-4 text-sm font-medium">
+                <p>{{  rider.pickup_data.display_name[:20] }}{% if rider.pickup_data.display_name | length > 20  %}...{% endif %}</p>
+                    {{ arrow(width="1em", height="1em", view=24) }} 
+                <p>{{  rider.dropoff_data.display_name[:20] }}{% if rider.dropoff_data.display_name | length > 20  %}...{% endif %}</p>
+             </div>
+             <div class="flex w-full items-center justify-between">
+                 <p class="text-sm">{{ _(" Pickup") }} {{ rider.pickup_details }}</p>
+                <p class="text-sm">{{ rider.driver_price | format_currency }}</p>
+             </div>
+        </div>
+
+       <data data-pickup_lat="{{ rider.pickup_lat }}" data-pickup_lon="{{ rider.pickup_lon }}" data-pickup_osm_id="{{ rider.pickup_osm_id }}" data-dropoff_lat="{{ rider.dropoff_lat }}" data-dropoff_lon="{{ rider.dropoff_lon }}" data-dropoff_osm_id="{{ rider.dropoff_osm_id }}"></data>
+    </label>
+    <div class="peer-checked/{{rider.user.id}}:flex hidden mt-2">
+        {{ customButton(_('Accept Ride'), hx_props={
+            'hx-post': url_for('inter.drivers.accept_ride', ride_request_id=rider._id),
+            'hx-target': '#page-content',
+            'hx-select': '#page-content',
+            'hx-swap': 'outerHTML',
+        }) }}
+    </div>
+</div>
+{% endmacro %}
+
+
+{% macro driverRequest(driver) %}
+    
+    <a href="{{url_for('inter.admin.view_driver_application', driver_id=driver._id)}}" 
+         hx-target= '#page-content'
+         hx-select= '#page-content'
+         hx-swap="outerHTML"
+        id="{{driver._id}}" class="driver-request">
+        <input type="radio" name="driver-request" id="{{ driver.user.id }}" class="peer/{{driver.user.id}} hidden" />
+        <label   for="{{ driver.user.id }}"
+        class="border-2 border-transparent border-b-gray-200 peer-checked/{{driver.user.id}}:border-black rounded-lg flex px-6 py-4 gap-x-6  items-center cursor-pointer">
+            <div class="">
+                <img
+                    class="rounded-[50%] h-12 w-12 object-cover  place-self-center flex items-center justify-center"
+                    src="{% if driver.user.profile_pic %}{{ url_for('profile_upload', filename=driver.user.build_path('profile', 'profile.png')) }}{% else %}{{ url_for('static', filename='assets/default-user.jpeg') }}{% endif %}"
+                    alt=""
+                    />
+            </div>
+            <div class="flex flex-col">
+                <span class="font-bold flex gap-3 items-baseline text-2xl">
+                {{ driver.user.display_name() }}
+
+                </span>
+                <div class="flex items-center  gap-x-4 text-sm font-medium">
+                  <p>{{ _("Applied at") }}: {{ driver.date_added | format_datetime(format='HH:mm, MMM dd y') }}</p>
+                  
+
+                </div>
+                <div class="flex w-full items-center gap-x-4">
+                    {% if driver.status == 'accepted' %}
+                            {{ circle_check() }}
+                            {{ _("Accepted") }}
+                    {% elif driver.status == 'rejected' %}
+                            {{ circle_xmark() }}
+                            {{ _("Rejected") }}
+
+                    {% elif driver.status == 'pending' %}
+
+                            {{ customButton(_('View Driver Application'))}}
+                            
+                    {% endif %}
+                </div>
+            </div>
+        </label>
+       
+    </a>
+    
+{% endmacro %}

@@ -1,0 +1,43 @@
+{% from 'icons.html' import circle_check, circle_xmark, uber, caret_down, exit %}
+{% from 'components/general.html' import customButton %}
+
+
+{% macro admin_navbar() %}
+
+    <nav id="navbar" class="w-full col-span-full relative flex items-stretch px-16 py-2 justify-between bg-black">
+
+        <div id="left-nav" class="bg-black text-white py-4">
+            <a hx-boost="false" href="{{ url_for('inter.admin.dashboard.index') }}">{{ uber() }}</a>
+        </div>
+
+
+        <div id="right-nav" class="flex gap-x-6 items-center">
+
+            <div id="admin-info" class="flex items-center gap-x-2 relative h-full ">
+                {{ customButton(current_user.fname, variant="light", classes="rounded-full", id="user-button") }}  
+                <span class="text-white">{{ caret_down() }}</span>
+    
+    
+                <div id="admin-dropdown" class="absolute top-[100%] right-0 invisible overflow-hidden pt-3 z-10 shadow-lg rounded-md bg-transparent text-black">
+                    <div class="flex flex-col gap-y-2 min-w-[200px] bg-white z-20 justify-center rounded-md [&>*:first-child]:rounded-t-md [&>*:last-child]:rounded-b-md " >
+                        <span class="flex gap-x-6 py-3 px-4  broder-b border-b-gray-200">
+                            <div class="rounded-full"> {{current_user.fname[0] + ' ' + current_user.lname[0] }} </div>
+                        {{current_user.display_name()}}
+                        </span>
+                        <button hx-delete="{{ url_for('inter.auth.logout') }}" class="flex items-center gap-x-6 py-3 px-4 cursor-pointer hover:bg-gray-300"><span>{{ exit() }}</span>{{ _("Sign Out") }}</a>
+                    </div>
+                </div>
+            </div>
+    
+            <script>
+                linkHoverShow(document.querySelector("#admin-info"), document.querySelector('#admin-dropdown'))
+            </script>
+        </div>
+       
+    </nav>
+{% endmacro %}
+
+
+
+
+

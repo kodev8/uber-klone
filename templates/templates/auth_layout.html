@@ -1,0 +1,15 @@
+
+{% from 'components/auth.html' import auth_navbar %}
+{% extends 'templates/base.html' %}
+
+{% block content %}
+
+    {{ auth_navbar() }}
+    
+    <div id="page-content" class="h-fit flex pt-6 justify-center z-20">
+        {% block auth_content %}
+
+        {% endblock auth_content %}
+    </div>
+   
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% from 'components/general.html import customButton %}
+{% from 'components/modal.html' import modalBG %}
+
+{% macro modalContent() %}
+
+    <div class="flex flex-col gap-4">
+            <h4 class="col-span-full text-xl font-extrabold">Issue Encountered whiile getting location</h4>
+            
+            {{ customButton(_('Continue'), classes='w-fit rounded-md ', onclick="closeModal") }}
+        
+    </div>
+    
+{% endmacro %}
+
+
+{{modalBG(show=true, content=modalContent(), title=_("Search Locaton Issue") )}}

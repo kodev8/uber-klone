@@ -1,0 +1,25 @@
+{% from 'components/general.html' import searchLocation %}
+{% from 'icons.html' import xmark %}
+
+{% if data | length > 0 %}
+
+    {% for result in data %}
+        {{ searchLocation(result, type=search_type) }}
+    {% endfor %}
+
+{% else %}
+
+<div 
+class=" pl-4 py-3 flex w-full border-b border-slate-200 gap-2 items-center">
+<div class="rounded-full p-2 bg-gray-300">
+  {{ xmark() }}
+</div>
+<div>
+  <h4 class="title font-medium">{{ _("No search results at the moment") }}</h4>
+  
+</div>
+
+</div>
+    
+{% endif %}
+

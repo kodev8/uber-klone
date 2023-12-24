@@ -1,0 +1,28 @@
+{% from 'components/general.html' import searchJob, searchLocation %}
+
+{% if not results or results | length==0 %}
+
+<div class="w-full flex text-center py-2 font-bold"> No results </div>
+
+{% else %}
+
+<div>
+
+    {% if by == 'locations' %}
+
+    {% for location in results %}
+        {{ searchLocation(location) }}
+    
+    {% endfor %}
+
+    {% elif by=='jobs' %}
+
+    {% for job in results %}
+        {{searchJob(job)}}
+    {% endfor %}
+
+    {% endif %}
+
+</div>
+
+{% endif %}

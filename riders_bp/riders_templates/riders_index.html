@@ -1,0 +1,252 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'icons.html' import pickup, destination, clock, caret_down, circle_xmark, arrow, person, location, location_map, warning_sign, paypal, paymethod_card, cash %}
+{% from 'components/general.html' import customButton  %}
+{% from 'components/users.html' import rideOption  %}
+
+{% extends 'templates/users_layout.html' %}
+
+{% block page_content %}
+
+    {% if content=="index" %}
+    <div id="rider-form" class="rounded-md border-4 border-gray-300 col-span-full lg:col-span-4 p-6 h-fit row-start-2 lg:row-start-1">
+        
+        <h2 class="font-bold text-2xl">{{ _("Find a trip") }}</h2>
+
+        <form 
+        method="GET"
+        action="{{ url_for('inter.riders.choose_ride') }}"
+        class="flex flex-col gap-4 mt-4"
+        hx-target="#rider-form"
+        hx-select="#rider-form"
+        hx-swap="outerHTML"
+        hx-indicator=".htmx-base-indicator"
+        hx-vals='js:{
+            pickup_lat:getcoords("pickup", "lat"),
+            pickup_lon:getcoords("pickup", "lon"),
+            dropoff_lat:getcoords("dropoff", "lat"),
+            dropoff_lon:getcoords("dropoff", "lon"),
+            pickup_osm_id:getcoords("pickup", "osm_id"),
+            dropoff_osm_id:getcoords("dropoff", "osm_id"),
+            pickup_details:getDValue("#pickup_details", "value")
+        }'
+        > 
+            <div class="relative results-wrapper">
+                {{ customInput(form.pickup, props={'classes':'searchable'},  left_icon=pickup(), right_icon=circle_xmark(width=18, height=18, fill='#000', classes="clear-icon pickup invisible cursor-pointer"), 
+                hx_props=  {
+                    'hx-get':url_for('locations.search_locations'),
+                    'hx-push-url':"false",
+                    'hx-consume':"true",
+                    'hx-target':'#pickup-locations',
+                    'hx-select':'unset',
+                    'hx-swap':'innerHTML',
+                    'hx-trigger':'keyup[checkSearchLocation(event)] changed delay:1000ms',
+                    'hx-target-4*':'#messages',
+                    'hx-vals':'unset',
+                    'hx-on::after-request':"showMapClicker(event, 'pickup')",
+                    'autocomplete':'off'
+                }) }}
+                <div id="" class="results-parent-container bg-white absolute top-[100%] shadow-xl w-full z-20 max-h-[calc(100vh/2)] overflow-y-auto ">
+                    <div onclick="initMapListener('pickup')" id="pickup-set-location-on-map"
+                        class="map-clicker hidden pl-4 location-result hover:bg-gray-200 py-3 w-full border-b border-slate-200 gap-2 items-center cursor-pointer">
+                        <div class="rounded-full p-2 bg-gray-300">
+                            {{ location_map() }}
+                        </div>
+                        <div>
+                            <h4 class="title font-medium">{{ _("Set location on map") }}</h4>
+                        </div>
+                    </div>
+                    <div id="pickup-locations" class="results-container"></div>
+                </div>
+            </div>
+
+            <div class="relative results-wrapper">
+                {{ customInput(form.dropoff,props={'classes':'searchable'},  left_icon=destination(), right_icon=circle_xmark(width=18, height=18, fill='#000', classes="clear-icon dropoff invisible cursor-pointer"),
+                    hx_props = {
+                        'hx-get':url_for('locations.search_locations'),
+                        'hx-push-url':"false",
+                        'hx-consume':"true",
+                        'hx-target':'#dropoff-locations',
+                        'hx-select':'unset',
+                        'hx-swap':'innerHTML',
+                        'hx-trigger':'keyup[checkSearchLocation(event)] changed delay:1000ms',
+                        'hx-target-4*':'#messages',
+                        'hx-vals':'unset',
+                        'hx-on::after-request':"showMapClicker(event, 'dropoff')",
+                        'autocomplete':'off'
+                    }) }}
+                <div id="" class="results-parent-container bg-white absolute top-[100%] shadow-xl w-full z-20 max-h-[calc(100vh/2)] overflow-y-auto ">
+                    <div onclick="initMapListener('dropoff')" id="dropoff-set-location-on-map"
+                        class="map-clicker hidden pl-4 location-result hover:bg-gray-200 py-3 w-full border-b border-slate-200 gap-2 items-center cursor-pointer">
+                        <div class="rounded-full p-2 bg-gray-300">
+                            {{ location_map() }}
+                        </div>
+                        <div>
+                            <h4 class="title font-medium">{{ _("Set location on map") }}</h4>
+                        </div>
+                    </div>
+                    <div id="dropoff-locations" class="results-container"></div>
+
+                </div>
+            </div>
+            <span 
+            hx-get="{{ url_for('inter.riders.details') }}"
+            hx-target="#rider-form"
+            hx-select="#rider-form"
+            hx-include="closest form"
+            hx-swap="inenHTML"
+            class="pointer-events-auto"
+            >
+                {{ customInput(form.pickup_details, props={'size':'lg', 'classes':'w-full overflow-hidden pointer-events-none'}, left_icon=clock(), right_icon=caret_down())  }}
+            </span> 
+            {{ customInput(form.search, props={'size':'lg', 'disabled':true, 'classes':'form-submitter font-bold w-full rounded-md disabled:cursor-not-allowed'}, )  }} 
+
+        </form>
+        
+    </div>
+
+    {% elif content=='choose-ride' %}
+
+        <form 
+        hx-post = "{{ url_for('inter.riders.confirm_ride') }}"
+        hx-vals='js:{
+            pickup_lat:getcoords("pickup", "lat"),
+            pickup_lon:getcoords("pickup", "lon"),
+            pickup_osm_id:getcoords("pickup", "osm_id"),
+            dropoff_osm_id:getcoords("dropoff", "osm_id"),
+            dropoff_lat:getcoords("dropoff", "lat"),
+            dropoff_lon:getcoords("dropoff", "lon"),
+            pickup_details:getDValue("#pickup_details", "value")
+        }'
+        id="rider-form" class="flex flex-col gap-y-2 row-start-2 my-12 lg:my-0 lg:row-start-1 col-span-full lg:col-span-6 h-[80vh] overflow-auto relative">
+
+            <h1 class="font-bold text-3xl">{{ _("Choose a ride") }}</h1>
+
+            <div class="flex justify-center flex-col rounded-lg border-2 border-gray-300 p-4">
+                <div class="flex items-center  gap-x-4 text-sm font-medium">
+                    <p>{{  pickup_data.display_name[:20] }}{% if pickup_data.display_name | length > 20  %}...{% endif %}</p>
+                        {{ arrow(width="1em", height="1em", view=24) }} 
+                    <p>{{  dropoff_data.display_name[:20] }}{% if dropoff_data.display_name | length > 20  %}...{% endif %}</p>
+                 </div>
+                 <p class="text-sm">{{ _("Pickup") }} {{ pickup_details }}</p>
+                 <input type="hidden" name="pickup_details" data-value="{{ pickup_details }}" id="pickup_details">
+
+            </div>
+
+            {% if route %}
+                <div class="flex flex-col gap-y-3">
+
+                    <h3 class="font-bold text-xl">{{ _("Recommended").capitalize() }}</h3>
+
+                    {% for option in recommended_options  %}
+                        {{ rideOption(option, is_checked=loop.index==1) }}
+                    {% endfor %}
+
+                    <h3 class="font-bold text-xl">{{ _("Popular").capitalize()}}</h3>
+
+                    {% for option in popular_options  %}
+                        {{ rideOption(option) }}
+                    {% endfor %}
+
+                    <h3 class="font-bold text-xl">{{ _("More").capitalize() }}</h3>
+
+                    {% for option in more_options  %}
+                        {{ rideOption(option) }}
+                    {% endfor %}
+
+                </div>
+            
+
+                <div class="sticky flex w-full bottom-0  z-10 bg-white items-center justify-center">
+                    <div class="flex w-[95%] rounded-lg shadow-[0_4px_16px_hsla(0,0%,0%,0.16)] gap-x-3 p-4  mb-4">
+
+                        {% set hx_props={
+                            "hx-get":url_for('inter.riders.payment_method'),
+                            "hx-target":"#modal-bg",
+                            "hx-swap":"outerHTML",
+                            "hx-trigger":"click",
+                            "hx-target-4*":"#messages"}  %}
+
+                            
+                        {% if starred_paymethod %}
+                                {% if starred_paymethod.method == 'paypal' %}
+                                    {% set icon = paypal() %}
+                                    {% set text = starred_paymethod.email %}
+                                {% elif starred_paymethod.method == 'card' %}
+                                    {% set icon = paymethod_card() %}
+                                    {% set text = "xxxx-xxxx-xxxx-"+starred_paymethod.card_number[-4:] %}
+                                {% else %}
+                                {# its cash by default #}
+                                    {% set icon = cash() %}
+                                    {% set text = "Pay with cash" %}
+                                {% endif %}
+                            <div id="paymethod-data" class="w-full">
+                                {{ customButton(text, variant='super-light', icon_svg=icon, icon_svg_right=caret_down(), hx_props=hx_props, as_submit=false)}}
+                                <input type="hidden" name="paymethod" value="{{ starred_paymethod._id }}" id="paymethod">
+                            </div>
+                        {% else %}
+                            <div id="paymethod-data" class="w-full">
+                                {{ customButton(_("Pay"), variant='super-light', icon_svg_right=caret_down(), hx_props=hx_props) }}
+                            </div>
+
+                        {% endif %}
+
+                        {{ customButton(_('Request') + ' ' + 'Green', id="request-ride", classes='form-submitter w-full rounded-lg', size='md')}}
+                    </div>
+                </div>
+
+            {% else %}
+
+                <div class="flex flex-col gap-6 p-10 items-center justify-center h-full">
+                    {{ warning_sign() }}
+                    <h4 class="font-medium">
+                        {# translate tool does stops after period #}
+                        {{ _("There was an error, Something is not right.") }} {{_("Please try again later or try changing the pick-up or drop-off location.") }}
+                    </h4> 
+                </div>
+            {% endif %}
+            
+            </form>
+
+    {% endif %}
+
+    <div id="map-container" class="col-span-full {% if request.endpoint in ['riders.index', 'riders.details'] %} lg:col-span-8 {% else %} lg:col-span-6 {% endif %} border border-gray-400 p-4"></div>
+<script>
+    handleCustomInputs()
+    initMap()
+</script>
+
+{% if exec_scripts %}
+    <script type="text/javascript">
+        map.once('styledata', () => {
+
+        // let searchParams = new URLSearchParams({
+        //     'pickup_lat':"{{ pickup_data.lat }}",
+        //     'pickup_lon':"{{ pickup_data.lon }}",
+        //     'pickup_osm_id':"{{ pickup_data.osm_id }}",
+        //     'dropoff_lat':"{{ dropoff_data.lat }}",
+        //     'dropoff_lon':"{{ dropoff_data.lon }}",
+        //     'dropoff_osm_id':"{{ dropoff_data.osm_id }}",
+        // })
+        
+        let pickup_data = {
+            'lat':"{{ pickup_data.lat }}",
+            'lon':"{{ pickup_data.lon }}",
+            'osm_id':"{{ pickup_data.osm_id }}",
+        }
+
+        let dropoff_data = {
+            'lat':"{{ dropoff_data.lat }}",
+            'lon':"{{ dropoff_data.lon }}",
+            'osm_id':"{{ dropoff_data.osm_id }}",
+        }
+    
+
+        fetchAndDraw(pickup_data, dropoff_data)
+
+
+      
+        })
+    </script>
+{% endif %}
+
+{% endblock page_content %}

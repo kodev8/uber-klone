@@ -1,0 +1,93 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'icons.html' import arrow, credit_card, tag, road, car_front, clock, paper_plane, destination, pickup, paypal %}
+{% from 'components/general.html' import customButton, separator  %}
+{% from 'account_components.html' import tripTab %}
+{% set onerow = true %}
+{% extends 'templates/users_layout.html' %}
+
+{% block page_content %}
+
+    <div class="lg:col-start-2 col-span-full grid grid-cols-12 grid-rows-[auto_1fr]">
+        <a href="{{ url_for('inter.account.trips') }}" 
+        hx-target="#page-content"
+        hx-select="#page-content"
+        class="font-semibold flex items-center gap-3 col-span-full mb-6 lg:mb:0">{{arrow(classes='rotate-180')}} {{ _("Back to Trips") }}</a>
+
+        <div class="lg:col-start-3 lg:col-span-8 col-span-full">
+
+            <div class="pb-4 border-b-2 border-b-gray-300">
+                <h1 class="text-3xl font-bold">{{ _("Your trip") }}</h1>
+                <h3 class="pt-3 font-semibold">{{ trip.accepted_at | format_datetime(format='HH:mm EEEE, MMMM dd y') }} with {{ trip.other_member }}</h3>
+
+                <img src='https://maps.locationiq.com/v3/staticmap?key=pk.7cdd1ae3d1720c0eecdf58cfb5e74172&zoom=12&size=450x450&format=png&maptype=light&markers=icon:small-black-cutout|{{trip.pickup_lat}},{{trip.pickup_lon}}>&markers=icon:small-red-cutout|{{trip.dropoff_lat}},{{trip.dropoff_lon}}'>
+            </div>
+            
+            <div class="flex flex-col border-b-2 border-b-gray-300 gap-4 py-3 pl-4">
+                <h3 class="font-semibold text-xl">{{ _("Your trip") }}</h3>
+                <div class="flex items-center">
+                    <span class="pr-4 py-3">{{ car_front() }}</span>
+                    <span>{{ trip.ride_option_name }}</span> 
+                </div>
+                <div class="flex items-center">
+                    <span class="pr-4 py-3">{{ road() }}</span>
+                    <span>{{ trip.formatted_distance }}</span> 
+                </div>
+                <div class="flex items-center">
+                    <span class="pr-4 py-3">{{ clock() }}</span>
+                    <span>{{ trip.duration }}</span> 
+                </div>
+                <div class="flex items-center">
+                    <span class="pr-4 py-3">{{ tag() }}</span>
+                    <span>
+                        {% if is_rider %}
+                         {{ trip.rider_price| format_currency }}
+                        {% else %}
+                            {{ trip.driver_price | format_currency}}
+                        {% endif %}</span> 
+                </div>
+
+                {% if is_rider %}
+                    
+                    <div class="flex items-center">
+                        {% if 'card' in trip.formatted_paymethod.lower() %}
+                            <span class="pr-4 py-3">{{ credit_card() }}</span>
+                        {% else %}
+                            <span class="pr-4 py-3">{{ paypal() }}</span>
+                        {% endif %}
+
+                        <span>{{ trip.formatted_paymethod }}</span> 
+                    </div>
+                {% endif %}
+                
+
+                <div class="flex">
+                    {{ customButton(_("Resend receipt"), variant='light', icon_svg=paper_plane(), classes="w-fit rounded-2xl my-4 !p-2", size='sm',
+                    hx_props={
+                        'hx-post': url_for('inter.account.resend_receipt', ride_id=trip._id),
+                        'hx-target': '#messages',
+                        'hx-swap': 'outerHTML',
+                    }
+                    ) }}
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4 py-3 pl-4 relative">
+                <h3 class="font-semibold text-xl">{{ _("Route") }}</h3>
+                
+                <div class="relative">
+                    <div class="absolute flex flex-col items-center justify-center">
+                        <span>{{ pickup() }}</span>
+                        <span class="bg-black h-8 w-[3px]"></span>
+                        <span>{{ destination() }}</span>
+                    </div>
+
+                        <p class="pl-8 pr-4 text-sm">{{ trip.pickup_data.display_name }} - <span class="text-gray-400">{{ trip.accepted_at | format_datetime('HH:mm') }}</span></p>
+                        <p class="pl-8 pr-4 mt-4 text-sm">{{ trip.dropoff_data.display_name }} - <span class="text-gray-400">{{ trip.ended_at | format_datetime('HH:mm')  }}</span></p>
+                        
+                </div>
+               
+            </div>
+        </div>
+
+    </div>
+{% endblock page_content %}

@@ -1,0 +1,15 @@
+{% from 'components/modal.html' import modalBG %}
+{% from 'components/general.html' import customButton %}
+
+{% macro modalContent() %}
+
+    <div class="flex flex-col gap-6 p-6">
+        <h4 class="col-span-full text-xl">{{ header or 'Bad Request' }}</h4>
+        <span class="col-span-full text-sm">{{ message }}</span>
+        {{ customButton("Ok", onclick="closeModal()", size="lg", classes='w-fit rounded-lg ml-auto') }}
+    </div>
+    
+{% endmacro %}
+
+
+{{modalBG(show=true, content=modalContent())}}

@@ -1,0 +1,64 @@
+{% from 'account_components.html' import manageNavbar, manageSubnavTab, manageAction %}
+{% from 'icons.html' import plus, caret_down %}
+{% from 'components/forms.html' import customInput, inlineError %}
+
+
+{% extends 'account_layout.html' %} 
+
+  {% block page_content %}
+
+
+
+        <div id="subnav-content" class="col-span-full h-full flex flex-col  p-6 md:p-0 lg:max-w-[350px] pt-12 justify-center  justify-self-center gap-6" >
+
+        <h1 class="font-bold text-4xl"> {{ header }}</h1>
+
+
+        {% if 'password'  in resource %}
+            <p>{{ _("Your password must be at least 8 characters long, and contain at least one digit and one non-digit character") }}</p>
+        {% else %}
+            <h4 class="font-medium">{{ _("Personalise your experience") }}</h4>
+        {% endif %}
+        {% set url = url_for('inter.account.update_' + resource ) %}
+          <form 
+          {% if method == "POST" %}
+            hx-post="{{ url }}"
+          {% else %}
+             hx-patch="{{ url }}"
+          {% endif %}
+          {% if resource=='email' %}
+            hx-select="#auth-content"
+            hx-target="#subnav-content"
+          {% endif %}
+          hx-swap="innerHTML show:window:top"
+          class="flex flex-col gap-4 h-full"
+          hx-target-4*="{% for field in form %}#{{field.id}}-error{% if not loop.last %},{% endif %}{% endfor %},#messages"
+          novalidate
+          >
+
+          {% for field in form  %}
+            
+            {% set props = {} %}
+            {% if field.type == 'SubmitField' %}
+              {% set _=props.__setitem__("classes", "mt-auto mb-10 rounded-md") %}
+              {% set _=props.__setitem__("size", "md") %}
+            {% endif %}
+            
+            {% if field.type == 'PasswordField' %}
+                {% set _=props.__setitem__("outertext", field.label.text) %}
+                {% set _=props.__setitem__("placeholder", " ") %}
+            {% endif %}
+                
+            {{ customInput(field, props=props) }}
+          {% endfor %}
+
+          </form>
+            
+
+    </div>
+
+    <script>
+        handleCustomInputs()
+    </script>
+
+{% endblock page_content %}

@@ -1,0 +1,72 @@
+<div class="text-4xl font-bold">
+    <h2>Enter the 4-digit code sent to you at:</h2>
+    <p>{{ email }}</p>
+ </div>
+
+ {# need to target the code-form as of right now since i dont have access to the email submitted #}
+ <!-- digir form -->
+ <div id="auth-flow-form" 
+    
+    class="flex flex-col gap-y-2"
+ >
+    <form 
+    method="POST" 
+    action="{{ action  }}"
+    hx-push-url="false"
+    hx-target-4*="#auth-flow-form"
+    hx-target="#page-content"
+    hx-select="#page-content"
+    hx-swap="outerHTML"
+    hx-indicator=".htmx-base-indicator"
+    hx-history="false"
+    class="flex gap-4">
+       
+       {% for field in form %}
+       
+          {% if field.type=='SubmitField' %}
+             {{ customInput(field, props={
+                'size':'lg',
+                'classes':'w-full rounded-md col-span-full'
+             }) }}
+
+          {% else %}
+
+             {% set classes = "code-input w-fit px-4 text-center max-w-[50px] overflow-hidden transition-color" %}
+             
+             {% if code_error %}
+                {% set classes = classes + " !border-red-500" %}
+             {% endif %}
+
+             {{ customInput(field, props={'placeholder':"", 'classes': classes}) }}
+
+          {% endif %}
+       {% endfor %}
+       
+          <button class="hidden submitter"></button>
+    </form>
+       {% if code_error %}
+          {{ inlineError('code', text=code_error, icon=true) }}
+       {% endif %}
+     <script src="{{ url_for('static', filename='scripts/auth-code.js') }}" type="text/javascript"></script>
+    <span class="text-xs text-slate-400">Tip: Be sure to check your inbox and spam folders</span>
+ </div>
+
+ <div class="grid gap-2">
+
+    {% if is_user %}
+       <span hx-get="{{ url_for('inter.auth.verify_options',with_password=true, with_code=true) }}" hx-target="#modal-bg" hx-swap="outerHTML">
+          {{ customButton("I haven't received a code", variant='light',classes="w-fit rounded-full font-medium",size="md") }}
+       </span>    
+    {% else %}
+
+       <span
+       hx-get="{{ url_for('inter.auth.resend_code') }}"
+       hx-target="#messages"
+       hx-swap="innerHTML"
+       >
+          {{ customButton('Resend', variant='light',classes="w-fit rounded-full font-medium",size="md") }}
+       </span>
+       
+    {% endif %}
+    
+ </div>

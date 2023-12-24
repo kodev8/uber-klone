@@ -1,0 +1,27 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'icons.html' import circle_check %}
+{% from 'components/general.html' import customButton  %}
+
+{% extends 'templates/users_layout.html' %}
+
+{% block page_content %}
+    <div 
+    hx-get="{{ url_for('inter.chat.driver', ride_request_id=ride_request_id) }}"
+    hx-trigger="load delay:5s"
+    hx-push-url="true"
+    hx-target="#page-content"
+    hx-select="#page-content"
+    class="col-span-full w-full flex flex-col justify-center items-center gap-8">
+        {{ circle_check(width=32, height=32) }}
+
+        
+        <h1>{{ _("We are notifying the rider!") }}</h1>
+        <div class="notify-load">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+    </div>
+{% endblock page_content %}

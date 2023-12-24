@@ -1,0 +1,20 @@
+{% from 'components/modal.html' import modalBG %}
+{% from 'components/general.html' import customButton %}
+
+{% macro modalContent() %}
+
+    <div class="flex flex-col gap-6 p-6">
+        <span class="col-span-full text-xl">{{ _("Are you sure you want to start from the beginning?") }}</span>
+
+        <a href="{{ url_for('inter.auth.auth_flow') }}" hx-push-url="false" hx-target="body" hx-history="false">
+            {{ customButton(_("Yes, start over"), size="md") }}
+        </a>
+        {{ customButton(_("No, Continue"),variant="light", onclick="closeModal()", size="md") }}
+        
+   
+    </div>
+    
+{% endmacro %}
+
+
+{{modalBG(show=true, content=modalContent(), title=_("Start over?") )}}

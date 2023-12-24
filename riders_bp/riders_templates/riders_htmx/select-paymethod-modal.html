@@ -1,0 +1,52 @@
+{% from 'icons.html' import plus, paypal, paymethod_card, cash %}
+{% from 'components/modal.html' import modalBG %}
+{% from 'components/general.html' import customButton %}
+
+{% macro modalContent() %}
+
+    <form 
+    method="POST"
+    action="{{ url_for('inter.riders.payment_method') }}"
+    hx-target-4*="#messages"
+    hx-target="#paymethod-data"
+    hx-swap="innerHTML focus-scroll:unset"
+    hx-push-url="false"
+    id="modal-content"
+    class="flex flex-col gap-6 p-6">
+            <span class="col-span-full text-xl font-extrabold">{{ _("Payment Options") }}</span>
+            {% if user_paymethods %}
+
+               
+                {% for option in user_paymethods %}
+
+                    <label class="relative flex items-center gap-4 ">
+                    {% if option.method == 'paypal' %}
+                        {{ paypal() }}
+                        <span class="font-medium">Paypal</span> 
+                        <span class="text-sm text-gray-300">{{ option.email }} </span>
+                    {% elif option.method=='card' %}
+                        {{ paymethod_card() }}
+                        <span class="font-medium">Card </span>
+                        <span class="text-sm text-gray-300">{{ 'xxxx-xxxx-xxxx-' + option.card_number[-4:] }} </span>
+                    {% elif option.method == 'cash' %}
+                        {{ cash(height='h-6', width='w-6') }}
+                        <span class="font-medium">Cash</span>
+                    {% endif %}
+                        <input type="radio" name="pay_method" value="{{ option._id }}" class="ml-auto" {% if option.is_starred %} checked="checked" {% endif %}> 
+                    </label>
+                {% endfor %}
+            {% endif %}
+            <div class="flex items-center cursor-pointer">
+                <span class="pr-4 font-medium pb-6">{{ plus() }}</span>
+                <span hx-get="{{ url_for('inter.account.add_payment_method') }}" hx-target="#modal-content" hx-select="#modal-content" hx-swap="outerHTML" 
+                class="border-b border-gray-200 pb-6  w-full">Add new payment method</span>
+            </div>
+
+            {{ customButton('Save')}}
+               
+    </form>
+    
+{% endmacro %}
+
+
+{{modalBG(show=true, content=modalContent())}}

@@ -1,0 +1,130 @@
+{% from 'icons.html' import paypal, paymethod_card, circle_check, warning_sign %}
+{% from 'components/modal.html' import modalBG %}
+{% from 'components/forms.html' import customInput %}
+{% from 'components/general.html' import customButton %}
+{% from 'account_components.html' import paymethodTab %}
+
+{% macro modalContent() %}
+
+    <div id="modal-content" class="flex flex-col gap-6 p-6">
+        <h4 class="col-span-full text-xl font-extrabold">{{ _("Add a payment method") }}</h4>
+
+        <div hx-get="{{ url_for('inter.account.add_payment_method_type', method='paypal') }}" 
+        hx-target="#modal-content" hx-select="#modal-content" hx-swap="outerHTML"
+         class="flex cursor-pointer">
+            <span class="pr-4 font-medium">{{ paypal() }}</span>
+            <span class="border-b border-gray-200 pb-4 w-full">PayPal</span>
+        </div>
+
+        <div  hx-get="{{ url_for('inter.account.add_payment_method_type', method='card') }}" 
+        hx-target="#modal-content" hx-select="#modal-content" hx-swap="outerHTML"
+        class="flex cursor-pointer">
+            <span class="pb-4 pr-4 font-medium">{{ paymethod_card() }}</span>
+            <span>{{ _("Credit or Debit card") }}</span>
+        </div>
+    </div>
+    
+{% endmacro %}
+
+{% macro modalFormContent(form) %}
+
+
+    {% if method=='paypal' %}
+        {% set header = 'Paypal' +  _('Account') %}
+        {% set icon = paypal() %}
+    {% elif method =='card' %}
+        {% set  header =  _("Credit or Debit Card") %}
+        {% set icon = paymethod_card() %}
+    {% endif %}
+
+    <div id="modal-content" class="flex flex-col gap-6 p-6">
+
+    
+        <h4 class="col-span-full text-xl font-extrabold">{{ _("Add") }} {{ header }}</h4>
+
+        <form class="grid md:grid-cols-2 gap-6 p-6"
+        hx-post="{{ url_for('inter.account.add_payment_method_type', method=method) }}" 
+        hx-target-4*="{% for field in form %}#{{field.id}}-error{% if not loop.last %},{% endif %}{% endfor %},#messages"
+        hx-target="#modal-content"
+        hx-select="#modal-content"
+        >
+        
+
+            {% for field in form %}
+                {% set props = {} %}
+                {% if field.type != "SubmitField" %}
+                    
+                    {% if field.id in ['card_number', 'country','email'] %}
+                        {% set _= props.__setitem__("span_full", true) %}
+                        {# TODO: playaround with outetext and placeholder #}
+                    {% endif %}    
+                    
+
+                    {{ customInput(field, props=props,)}}
+
+                {% endif %}
+
+            {% endfor %}
+        
+            {{ customInput(form.add, props={'classes':"form-submitter w-full rounded-lg col-span-full", 'disabled':true, 'size':'lg'}) }}
+            {{ customButton(_('Cancel'), variant="super-light", classes="w-full rounded-lg col-span-full", size='lg', as_submit=false, 
+            hx_props={'hx-get':url_for('close_modal'), 'hx-target':"#modal-bg" ,'hx-swap':"outerHTML", 'hx-select':'unset' }) }}
+        </form>
+
+    </div>
+
+
+{% endmacro %}
+
+
+{% macro modalSuccessContent() %}
+    
+    <div id="modal-content" class="flex flex-col gap-6 p-6">
+        <h4 class="col-span-full text-xl font-extrabold">{{ _("Payment Method Added") }}</h4>
+
+        <div class="flex items-center justify-center">
+            {{ circle_check(width="4em", height="4em", view=24) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro modalExceedContent() %}
+
+    <div id="modal-content" class="flex flex-col gap-6 p-6">
+        <h4 class="col-span-full text-xl font-extrabold">{{ _("Payment Method Warning") }}</h4>
+
+        <div class="flex items-center justify-center">
+            {{ warning_sign()}}
+        </div>
+        <p class="text-center">{{ _("You have reached the maximum number of payment methods allowed.") }}</p>
+        <p>{{ _("If you realy want to add a new payment method, please go to") }} <a hx-boost='false' href="{{ url_for('inter.account.wallet') }}" class="underline text-blue-400">{{ _("your wallet") }}</a> {{ _("and remove at least one one.") }}</p>
+    </div>
+    
+{% endmacro %}
+
+
+{% if form %}
+    {% set final_content = modalFormContent(form)  %}
+{% elif success == true %}
+    {% set final_content = modalSuccessContent()  %}
+
+    <div hx-swap-oob="true" id="payment-methods" class="grid md:grid-cols-2 gap-4">
+                    
+        {% if user_paymethods %}
+            
+            {% for paymethod in user_paymethods  %}
+                {{ paymethodTab(paymethod) }}
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+{% elif exceed_warning == true %}
+    {% set final_content = modalExceedContent() %}
+{% else %}
+    {% set final_content = modalContent()  %}
+{% endif %}
+
+
+{{modalBG(show=true, content=final_content)}}

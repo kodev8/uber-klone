@@ -1,0 +1,18 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'icons.html' import pickup, destination, clock, caret_down, circle_xmark, arrow, person %}
+{% from 'components/general.html' import customButton  %}
+
+{% extends 'templates/users_layout.html' %}
+
+{% block page_content %}
+
+    <div class="col-start-3 col-end-9 flex flex-col gap-y-4">
+
+        <h3 class="font-bold text-2xl"></h3>{{ _("Authorised applications.") }}
+        <span> {{ _("You do not have any authorised applications") }}</span>
+        {{ customButton(_("Log out"), variant="light", classes=" rounded-md w-fit !text-red-500 ", hx_props={"hx-delete":url_for('inter.auth.logout') }) }}
+        {# todo add delete account #}
+    </div>
+
+
+{% endblock page_content %}

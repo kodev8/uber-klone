@@ -1,0 +1,33 @@
+{% from 'icons.html' import ellipses, envelope %}
+{% from 'components/modal.html' import modalBG %}
+
+{% macro modalContent(with_password, with_code) %}
+
+    <div class="flex flex-col gap-6 p-6">
+            <span class="col-span-full text-xl font-extrabold">{{ _("Choose another way to verify") }}</span>
+
+            {% if  with_password %}
+                
+                <div hx-get="{{ url_for('inter.auth.login_password') }}" hx-target-4*="#messages" hx-target="#auth-content" hx-select="#auth-content" hx-swap="outerHTML" class="flex cursor-pointer">
+                    <span class="pr-4 font-medium">{{ ellipses() }}</span>
+                    <span class="border-b border-gray-200 pb-4 w-full">{{ _("Password") }}</span>
+                </div>
+
+            {% endif %}
+
+            {% if with_code %}
+                
+                <div hx-get="{{ url_for('inter.auth.resend_code') }}" hx-target-4*="#messages" hx-target="#messages" hx-swap="innerHTML" class="flex cursor-pointer">
+                    <span class="pb-4 pr-4 font-medium">{{ envelope() }}</span>
+                    <span>{{ _("Resend code via email") }}</span>
+                </div>
+
+            {% endif %}
+
+   
+    </div>
+    
+{% endmacro %}
+
+
+{{modalBG(show=true, content=modalContent(with_password, with_code), title="More options")}}

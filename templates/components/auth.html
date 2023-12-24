@@ -1,0 +1,13 @@
+{% from 'icons.html' import uber  %}e
+
+{% macro auth_navbar() %}
+    
+    <nav id="navbar" class="w-full col-span-full relative flex items-stretch px-16 py-2 justify-between bg-black"
+    >
+
+    <div id="left-nav" class="bg-black text-white py-4">
+        <a href="{{ url_for('inter.general.index') }}">{{ uber() }}</a>
+    </div>
+
+    </nav>
+{% endmacro %}

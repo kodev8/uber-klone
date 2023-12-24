@@ -1,0 +1,19 @@
+{% from 'general_components.html' import navbar with context %}
+
+{% extends 'templates/base.html' %} 
+
+  {% block content %}
+
+  <div id="main" class="w-full h-full grid grid-rows-[auto_1fr_auto]" >
+    
+    {{ navbar() }}
+
+    <div id="page-content" hx-swap="outerHTML show:window:top" class="w-full h-full grid grid-cols-12  relative">
+      {% block page_content -%}
+      {%- endblock page_content %}
+    </div>
+  <!-- end page content -->
+</div>
+
+
+{% endblock content %}

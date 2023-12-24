@@ -1,0 +1,56 @@
+{% from 'account_components.html' import walletNavbar, walletTab, paymethodTab with context %}
+{% from 'icons.html' import plus %}
+
+{% extends 'templates/base.html' %} 
+
+  {% block content %}
+
+  <div id="main" class="w-full h-full grid grid-rows-[auto_1fr]" >
+    
+    {{ walletNavbar() }}
+ 
+    <div id="page-content" hx-swap="outerHTML show:window:top" class="w-full h-full grid lg:grid-cols-12 relative p-6">
+        
+        <div class="col-start-3 col-end-10 grid gap-4">
+
+            {% if current_user.has_role('driver') %}
+                <div id="bank-methods" class="grid gap-4 md:grid-cols-2">
+
+                    {% if driver_bank %}
+
+                        {{ walletTab(_('Bank Account: ') + driver_bank.bank_name,driver_bank) }}
+                    {% else %}
+                        {{ walletTab('Uber Cash') }}
+                    {% endif %}
+                </div>
+            {% endif %}
+                
+
+            <div class="flex flex-col gap-4">
+                <h3 class="text-2xl font-bold">{{ _("Payment Methods") }}</h3>
+                <div id="payment-methods" class="grid md:grid-cols-2 gap-4">
+                    
+                    {% if user_paymethods %}
+                        
+                        {% for paymethod in user_paymethods  %}
+                            {{ paymethodTab(paymethod) }}
+                        {% endfor %}
+
+                    {% endif %}
+                </div>
+                
+            </div>
+
+            <div hx-get="{{ url_for('inter.account.add_payment_method') }}" hx-target="#modal-bg" class="flex items-center justify-center cursor-pointer">
+                <span class="pr-4 font-medium pb-6" >{{ plus() }}</span>
+                <span class="border-b border-gray-200 pb-6  w-full">{{ _("Add new payment method") }}</span>
+            </div>
+        </div>
+
+
+    </div>
+
+  </div>
+
+
+{% endblock content %}

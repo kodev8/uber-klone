@@ -1,0 +1,317 @@
+{% from 'components/general.html' import customButton %}
+{% from 'general_components.html' import navdrawerContainer with context %}
+{% from 'icons.html' import uber, home, car_front_outlned, steering_wheel, restaurant,check, xmark, menu_bar, arrow, location,
+                        languages, products, earn_filled, restaurant, car_front_outlned, document, person_multiple %}
+
+{% extends 'general_layout.html' %} 
+    {% block page_content %}
+
+    <div class="lg:col-span-6 w-full col-span-full h-screen">
+        <!-- nav card -->
+        <div class="group bg-white flex flex-col gap-y-6 borderlg:max-w-2xl lg:m-16 ">
+
+            <!-- tab nav -->
+            <div class="border-b border-b-slate-300 bg-gray-100/50 ">
+
+
+                <div class="flex w-fit lg:w-full lg:justify-evenly relative">
+                    
+                    {% if is_admin %}
+
+                        <input id="dashboard" type="radio" name="tab" checked class="peer/dashboard hidden">
+                        <label onclick="swapImg('dashboard', '#index-bg')" for="dashboard" class="flex flex-col gap-y-3 items-center justify-evenly p-8 text-center max-w-[130px]"
+                        hx-get="{{ url_for('inter.general.index', tab='dashboard') }}" 
+                        hx-swap="innerHTML"
+                        hx-target="#tab-content-container"
+                        hx-select="#tab-content-container"
+                        hx-trigger="click"
+                        hx-push-url="false">
+                            {{ document(width=24, height=24) }}
+                            <h3 class="font-medium">{{ _("Dashboard") }}</h3>
+                        </label>
+                        {# vd for verify drivers #}
+                        <input id="vd" type="radio" name="tab" class="peer/vd hidden">
+                        <label onclick="swapImg('vd', '#index-bg')" for="vd" class="flex flex-col gap-y-3 items-center justify-evenly p-8"
+                        hx-get="{{ url_for('inter.general.index', tab='vd') }}" 
+                        hx-swap="innerHTML"
+                        hx-target="#tab-content-container"
+                        hx-select="#tab-content-container"
+                        hx-trigger="click"
+                        hx-push-url="false">
+                            {{ check(width=24, height=24) }}
+                            <h3 class="font-medium">{{ _("Verify Drivers") }} </h3>
+                        </label>
+
+                        <div class="h-1 w-[25%] lg:w-[23%] absolute bottom-0 left-[-30px] bg-black transition-all duration-200 ease-in-out 
+                            peer-checked/dashboard:translate-x-full
+                            peer-checked/vd:translate-x-[270%]
+                        
+                            lg:peer-checked/dashboard:translate-x-full
+                            lg:peer-checked/vd:translate-x-[270%]
+                        "></div>
+                        
+                    {% else %}
+                        
+                        <input id="dod" type="radio" name="tab" checked class="peer/dod hidden">
+                        <label onclick="swapImg('dod', '#index-bg')" for="dod" class="flex flex-col gap-y-3 items-center justify-evenly p-8 text-center max-w-[130px]"
+                        hx-get="{{ url_for('inter.general.index', tab='dod') }}" 
+                        hx-swap="innerHTML"
+                        hx-target="#tab-content-container"
+                        hx-select="#tab-content-container"
+                        hx-trigger="click"
+                        hx-push-url="false">
+                            {{ earn_filled(width=24, height=24) }}
+                            <h3 class="font-medium">{{ _("Drive or deliver") }}</h3>
+                        </label>
+
+                        <input id="eat" type="radio" name="tab" class="peer/eat hidden">
+                        <label onclick="swapImg('eat', '#index-bg')" for="eat" class="flex flex-col gap-y-3 items-center justify-evenly p-8"
+                        hx-get="{{ url_for('inter.general.index', tab='eat') }}" 
+                        hx-swap="innerHTML"
+                        hx-target="#tab-content-container"
+                        hx-select="#tab-content-container"
+                        hx-trigger="click"
+                        hx-push-url="false">
+                            {{ restaurant(width=24, height=24) }}
+                            <h3 class="font-medium">{{ _("Eat") }}</h3>
+                        </label>
+                        
+                        <input id="ride" type="radio" name="tab" class="peer/ride hidden">
+                        <label onclick="swapImg('ride', '#index-bg')" for="ride" class="flex flex-col gap-y-3 items-center justify-evenly p-8"
+                        hx-get="{{ url_for('inter.general.index', tab='ride') }}" 
+                        hx-swap="innerHTML"
+                        hx-target="#tab-content-container"
+                        hx-select="#tab-content-container"
+                        hx-trigger="click"
+                        hx-push-url="false"
+                        >
+                            {{ car_front_outlned(width=24, height=24) }}
+                            <h3 class="font-medium">{{ _("Ride") }}</h3>
+                        </label>
+
+                        <div class="h-1 w-[20%] absolute bottom-0 left-[-30px] bg-black transition-all duration-200 ease-in-out 
+                            peer-checked/dod:translate-x-full
+                            peer-checked/eat:translate-x-[270%]
+                            peer-checked/ride:translate-x-[420%] 
+                        
+                            lg:peer-checked/dod:translate-x-full
+                            lg:peer-checked/eat:translate-x-[250%]
+                            lg:peer-checked/ride:translate-x-[380%]
+                        "></div>
+
+                    {% endif %}
+
+                    </div>
+
+            </div>
+            <!-- end tab-nav -->
+
+            <div id="tab-content-container" class="overflow-hidden relative" >
+                <!-- tab content -->
+
+                {% if is_admin %}
+
+                    {% if tab=='dashboard' %}
+                        
+
+                        <div class="inline-flex flex-col gap-y-4 pt-4 p-12">
+                            <h1 class="font-bold text-4xl ">{{ _("Go to your dashboard now!") }}</h1>
+                            <p class="text-sm text-slate-700">{{ _("Monitor requests, events and customize application data!") }}</p>
+                            <a hx-boost="false" href="{{url_for('inter.admin.dashboard.index')}}"> {{ customButton(_('Get to work'), classes="w-fit rounded-md font-medium") }}</a>
+                        </div>
+                    
+                    {% elif tab=='vd' %}
+                        <div class="inline-flex flex-col gap-y-4 pt-4 p-12">
+                            <h1 class="font-bold text-4xl ">{{ _("Start Verifying drivers") }}</h1>
+                            <p class="text-sm text-slate-700">{{_("Handle driver applciations in your admin portal") }}</p>
+                            <a hx-boost="false" href="{{url_for('inter.admin.verify_drivers')}}"> {{ customButton( _('View driver applciations'), classes="w-fit rounded-md font-medium") }}</a>
+                        </div>
+                        
+                    {% endif %}
+                    
+
+                
+
+                {% else %}
+                    {% if tab == 'dod' %}
+                        <div class="inline-flex flex-col gap-y-4 pt-4 p-12">
+                            <h1 class="font-bold text-4xl ">{{ _("Get in the driver's seat and get paid") }}</h1>
+                            <p class="text-sm text-slate-700"> {{ _("Order delivery from restaurants you love") }} </p>
+                            
+                            {% if current_user.is_authenticated and current_user.has_role('driver') %}
+                                <a href="{{url_for('inter.drivers.index')}}" > {{ customButton(_('Start driving now'), classes="w-fit rounded-md font-medium") }}</a>
+                            {% else %}
+                                <a href="{{url_for('inter.drivers.index', state=DRIVER_STATE)}}"> {{ customButton(_('Sign up to drive'), classes="w-fit rounded-md font-medium") }}</a>
+                            {% endif %}
+                            <p class="text-sm text-slate-700 underline">{{ _("Learn more about driving and delivering") }}</p>
+
+                        </div>
+
+                    {% elif tab == 'eat' %}
+
+                        <div class="inline-flex flex-col gap-y-4 pt-4 p-12">
+                            <h1 class="font-bold text-4xl ">{{ _("Discover delicious eats") }}</h1>
+                            <p class="text-sm text-slate-700">{{ _("Order delivery from restaurants you love.") }}</p>
+                            {{ customButton(_('Order now'), classes="w-fit rounded-md font-medium", hx_props={"hx-get":url_for('not_implemented') }) }}
+                            <p class="text-sm text-slate-700 underline">{{ _("Own a restaurant? Partner with Uber Eats") }}</p>
+                        </div>
+
+                    {% elif tab == 'ride' %}
+                        <div class="inline-flex flex-col gap-y-4 pt-4 p-12">
+                            <h1 class="font-bold text-4xl ">{{ _("Request a ride now") }}</h1>
+                            <div class="relative flex flex-col gap-y-4">
+                            
+                                {# TODO: use rideform HERE #}
+                                <div class="relative">
+                                    <input type="text" placeholder='{{ _("Enter pickup location" ) }}' class="bg-gray-100 pl-8 pr-12 py-4 w-full">
+                                    <span class="absolute right-4 top-[50%] -translate-y-[50%] text-gray-400">{{ location() }}</span>
+                                </div>
+                                <input type="text" placeholder='{{ _("Enter dropoff location" ) }}' class="bg-gray-100 pl-8 pr-12 py-4 w-full">
+                            </div>
+
+                            <div class="flex gap-x-4 font-medium">
+                            
+                                {{ customButton(_('Request now') , classes="w-fit rounded-md") }}
+                                {{ customButton(_('Schedule for later'), variant="light", classes="w-fit rounded-md") }}
+                            </div>
+
+                        </div>
+                    {% endif %}
+                {% endif %}
+                
+            </div>
+
+            <!-- end tab-content -->
+
+        </div>
+        <!-- end nav card -->
+
+        <div class="lg:absolute lg:top-0 w-full col-span-full z-[-1] h-screen">
+
+            {% if is_admin %}
+                {% set starter = 'dashboard' %}
+            {% else %}
+                {% set starter = 'man-driver' %}
+            {% endif %}
+            <img id="index-bg" src="{{ url_for('static', filename='assets/bg/' + starter + '.webp') }}" alt="uber" class="w-full h-full object-contain lg:object-cover">
+        </div>
+    </div>
+
+
+    {% if not is_admin %}
+
+
+    <div class="col-span-full w-full relative reveal opacity-0 translate-y-32 transiton-all duration-1000 ease-out">
+        {# https://www.uber-assets.com/image/upload/v1614379346/assets/f4/63ca3e-b0d7-4463-988f-a2fead503ddc/original/DotCom_Update_U4B_bg_mobileD.png #}
+        {# [url(https://www.uber-assets.com/image/upload/v1613522699/assets/28/5b0222-7869-4658-b2ca-80a3890a2b69/original/DotCom_Update_U4B_bg_ipad.png)] #}
+        {# https://www.uber-assets.com/image/upload/v1613106985/assets/0e/47aa71-35cb-459a-a975-78c61ea300e2/original/HP-U4B-NYC-bkg.png #}
+
+        <div class=" bg-[url('/static/assets/bg/index-mobile.webp')]
+        sm:bg-[url('/static/assets/bg/index-tablet.webp)]
+        lg:bg-[url('/static/assets/bg/index-desktop.webp')] 
+        bg-center bg-no-repeat bg-cover absolute h-auto min-w-full min-h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]"
+
+        ></div>
+<!-- 
+        <div class="lg:absolute lg:top-0 w-full col-span-full z-[-1] h-screen">
+            <img id="index-bg" src="{{ url_for('static', filename='assets/bg/man-driver.webp') }}" alt="uber" class="w-full h-full object-contain lg:object-cover">
+        </div>
+    </div>
+
+    <div class="col-span-full w-full relative reveal opacity-0 translate-y-32 transiton-all duration-1000 ease-out">
+        <div class=" bg-[url(https://www.uber-assets.com/image/upload/v1614379346/assets/f4/63ca3e-b0d7-4463-988f-a2fead503ddc/original/DotCom_Update_U4B_bg_mobileD.png)]
+        sm:bg-[url(https://www.uber-assets.com/image/upload/v1613522699/assets/28/5b0222-7869-4658-b2ca-80a3890a2b69/original/DotCom_Update_U4B_bg_ipad.png)]
+        lg:bg-[url(https://www.uber-assets.com/image/upload/v1613106985/assets/0e/47aa71-35cb-459a-a975-78c61ea300e2/original/HP-U4B-NYC-bkg.png)]"
+        
+        style="
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+        min-width: 100%;
+        height: auto;
+        min-height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scaleX(1);
+        z-index: -1;"
+        ></div> -->
+            
+        <div class="p-16 ">
+            <div class="flex flex-col gap-y-6 col-span-4">
+                <h2 class="text-3xl font-bold">{{ _("The Uber you know, reimagined for business") }}</h2>
+                <p class="text-xl">{{ _("A platform for managing gloabl rides and meals, and local deliveries, for companies of any size") }}</p>
+                {{ customButton(_('Get Started'), classes="w-fit rounded-md") }}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- #panel3   -->
+    <div class="flex flex-wrap col-span-full w-full p-12 gap-6 reveal opacity-0 translate-y-32 transiton-all duration-1000 ease-out back-to-top-threshold">
+        
+        <div class="flex flex-col flex-1 min-w-[200px] gap-y-6">
+            {{ person_multiple() }}
+            <h2 class="text-xl font-bold">{{ _("About Us") }}</h2>
+            <p class="">{{ _("Find out how we started, what drives us, and how we're reimagining how the world moves.") }}</p>
+            <span>{{ _("Learn more about Ubers") }}</span>
+        </div>
+
+        <div class="flex flex-col flex-1 min-w-[200px] gap-y-6">
+            {{ document() }}
+            <h2 class="text-xl font-bold">{{ _("Newsroom") }}</h2>
+            <p class="">{{ _("See announcements about our latest releases, initiatives, and partnerships.") }}</p>
+            <span>{{ _("Go to Newsroom") }}</span>
+        </div>
+
+        <div class="flex flex-col flex-1 min-w-[200px] gap-y-6">
+            {{ home() }}
+            <h2 class="text-xl font-bold">{{ _("Global citizenship") }}</h2>
+            <p class="">{{ _("Read about our commitment to making a positive impact in the cities we serve.") }}</p>
+            <span class="relative after:h-1 after:bg-black after:w-full">{{ _("See our partnerships") }}</span>
+        </div>
+
+
+    </div>
+    <!-- end #panel3 -->
+
+    <!-- #panel4   -->
+
+    
+    <div class="col-span-full w-full grid lg:grid-cols-12 reveal opacity-0 translate-y-32 transiton-all duration-1000 ease-out">
+
+            
+            {% if current_user.is_authenticated %}
+                        {{ navdrawerContainer(_("Drive & deliver"), 
+                        _("Ride with uber"), 
+                        ref1=url_for('inter.drivers.index'),
+                        ref2=url_for('inter.riders.index'),
+                        containerClasses="p-10") }}
+
+            {% else %}
+                    {{ navdrawerContainer(_("Sign Up to drive & deliver"), 
+                        _("Sign Up to ride"), 
+                        containerClasses="p-10", 
+                        ref1=url_for('inter.drivers.index', state=DRIVER_STATE), 
+                        ref2=url_for('inter.auth.auth_flow'),) }}
+            {% endif %}
+
+       
+
+    </div>
+
+        <div  class="group flex items-center justify-end bottom-6 right-6 fixed transition-all duration-500 back-to-top opacity-0 translate-y-">
+            <button class="inline-flex items-center justify-center font-medium shadow-[0px_2px_8px_rgba(0,0,0,0.16)] rounded-[38px] bg-white text-black leading-5 p-[14px] gap-2 transition-all translate-y-[2px]" 
+            onclick="document.body.scrollTo({top: 0, behavior: 'smooth'});">
+                <span class="text-xl font-medium hidden group-hover:block">{{ _("Back to top") }}</span>
+                {{ arrow(classes="rotate-[-90deg]")}}
+            </button>
+        </div>
+
+    {% endif %}
+
+
+    <!-- end #panel4 -->
+<script src="{{ url_for('static', filename='scripts/intersect.js') }}"></script>
+
+{% endblock page_content %}

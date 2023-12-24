@@ -1,0 +1,114 @@
+{% from 'components/users.html' import driverRequest  %}
+{% from 'icons.html' import circle_check, circle_xmark %}
+
+{% set title_text = 'Uber Admin' %}
+
+{% extends 'admin_layout.html' %}
+
+{% block admin_content %}
+
+<div class="col-span-full p-6 lg:p-12 lg:px-24 flex flex-col w-full">
+
+    <h1 class="text-3xl font-bold">{{ _("Handle driver requests here.") }}</h1>
+
+    <div id="admin-driver-nav" class="flex relative w-full gap-4 my-6 pb-3 font-semibold text-xl">
+        <span id="admin-driver-nav-indicator" class="h-1 bg-black w-24 absolute bottom-0 {% if handle !='requests' %} translate-x-24 {% else %} translate-x-0 {% endif %} duration-150 transition-transform"></span>
+       
+        <span   
+        hx-get="{{ url_for('inter.admin.verify_drivers', handle='requests') }}"
+        hx-swap="multi:#admin-driver-nav-indicator:outerHTML,#admin-driver-data"
+        class="cursor-pointer">
+            {{ _("Requests") }}
+        </span>
+
+        <span 
+        hx-get="{{ url_for('inter.admin.verify_drivers', handle='history') }}" 
+        hx-swap="multi:#admin-driver-nav-indicator:outerHTML,#admin-driver-data"
+        class="cursor-pointer">
+            {{ _("History") }}
+        </span>
+    </div>
+
+    <div id="admin-driver-data" class="grid lg:grid-cols-2 gap-4">
+
+        {% if all_drivers %}
+            
+            {% for driver in all_drivers  %}
+            
+                {{ driverRequest(driver)}}
+                
+            {% endfor %}
+
+        {% else %}
+
+            <div id="no-drivers" class="">
+                <button class="flex items-stretch rounded-lg flex-col overflow-hidden relative w-full text-start cursor-pointer border-red-500 border-solid">
+                    <div class="bg-center bg-cover bg-[url('/static/assets/ride-bg.svg')] h-[132px] w-full"></div>
+                    <div class="w-full py-6 pl-2">
+                        <span class="font-semibold">{{ _("No applciations here") }}</span>
+                    </div>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+    
+<script>
+
+    
+    const adminsocket = io.connect(window.location.origin + '/admin', {'transports': ['websocket']});
+
+
+    adminsocket.on('driver-application-request-send', function(data){
+
+        if (document.querySelector('#no-drivers')) {
+            document.querySelector('#no-drivers').remove()
+        }
+        let driverRequest = htmx.parseHTML(data.template, 1)
+        // Get the parent container and insert before the first child
+        let adminDriverDataContainer = document.querySelector('#admin-driver-data');
+        let firstChild = adminDriverDataContainer.firstChild;
+        adminDriverDataContainer.insertBefore(driverRequest, firstChild);
+        htmx.process(driverRequest)
+
+});
+
+adminsocket.on('driver-application-handled', function(data){
+
+    let driverRequest = document.getElementById(data.driver_application_id)
+
+    driverRequest?.remove()
+
+    // check if no drivers
+    if (document.querySelectorAll('.driver-request').length === 0) {
+        document.querySelector('#admin-driver-data').innerHTML = `
+            <div id="no-drivers" class="">
+                <button class="flex items-stretch rounded-lg flex-col overflow-hidden relative w-full text-start cursor-pointer border-red-500 border-solid">
+                    <div class="bg-center bg-cover bg-[url('/static/assets/ride-bg.svg')] h-[132px] w-full"></div>
+                    <div class="w-full py-6 pl-2">
+                        <span class="font-semibold">${data.message}</span>
+                    </div>
+                </button>
+            </div>
+        `
+    }
+});
+
+    if (window.onbeforeunload) {
+        let oldHandler = window.onbeforeunload;
+        window.onbeforeunload = function(event) {
+            oldHandler(event);
+            adminsocket.disconnect()
+            
+        };
+    }else{
+        window.onbeforeunload = adminsocket.disconnect
+    }
+
+
+
+
+</script>
+{% endblock admin_content %}
+

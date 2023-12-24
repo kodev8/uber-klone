@@ -1,0 +1,1223 @@
+# French translations for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-12-24 20:34+0100\n"
+"PO-Revision-Date: 2023-12-24 20:48+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.14.0\n"
+
+#: app.py:153
+msgid "This feature is not yet implemented"
+msgstr "Cette fonctionnalité n’est pas encore implémentée"
+
+#: account_bp/account.py:96
+msgid "You already have a PayPal account with this email"
+msgstr "Vous possédez déjà un compte PayPal avec cet email"
+
+#: account_bp/account.py:101
+msgid "You already have a card with this number"
+msgstr "Vous possédez déjà une carte avec ce numéro"
+
+#: account_bp/account.py:160
+msgid "Are you sure you want to remove your only other payment method?"
+msgstr "Êtes-vous sûr de vouloir supprimer votre seul autre mode de paiement ?"
+
+#: account_bp/account.py:162
+msgid "Are you sure you want to remove this payment method?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce mode de paiement ?"
+
+#: account_bp/account.py:185
+msgid "Payment method removed"
+msgstr "Mode de paiement supprimé"
+
+#: account_bp/account.py:258
+msgid "Update Phone Number"
+msgstr "Mettre à jour le numéro de téléphone"
+
+#: account_bp/account.py:262
+msgid "Update Name"
+msgstr "Mettre à jour le nom"
+
+#: account_bp/account.py:273
+msgid "Update Password"
+msgstr "Mettre à jour le mot de passe"
+
+#: account_bp/account.py:273
+msgid "New Password"
+msgstr "Nouveau mot de passe"
+
+#: account_bp/account.py:292 account_bp/account.py:367
+msgid "No changes to be made"
+msgstr "Aucune modification à effectuer"
+
+#: account_bp/account.py:299
+msgid "Enter this code to update your email address"
+msgstr "Entrez ce code pour mettre à jour votre adresse e-mail"
+
+#: account_bp/account.py:300
+msgid "Update you email address"
+msgstr "Mettez à jour votre adresse e-mail"
+
+#: account_bp/account.py:314
+msgid "Email updated successfully"
+msgstr "E-mail mis à jour avec succès"
+
+#: account_bp/account.py:328
+msgid "Phone number updated successfully"
+msgstr "numéro de téléphone mis à jour avec succès"
+
+#: account_bp/account.py:342
+msgid "Name updated successfully"
+msgstr "Nom mis à jour avec succès"
+
+#: account_bp/account.py:373
+msgid "The old password is inccorrect"
+msgstr "L'ancien mot de passe est incorrect"
+
+#: account_bp/account.py:378
+msgid "Password updated successfully"
+msgstr "Mot de passe mis à jour avec succès"
+
+#: account_bp/account.py:390
+msgid "You cannot remove your profile photo as a driver"
+msgstr "Vous ne pouvez pas supprimer votre photo de profil en tant que conducteur"
+
+#: account_bp/account.py:390
+msgid "Unable to remove profile photo"
+msgstr "Impossible de supprimer la photo de profil"
+
+#: account_bp/account.py:394
+msgid "Profile Photo removed"
+msgstr "Photo de profil supprimée"
+
+#: account_bp/account.py:408 account_bp/account.py:506
+msgid "Invalid File Type"
+msgstr "Type de fichier invalide"
+
+#: account_bp/account.py:417
+msgid "Profile Updated"
+msgstr "Profil mis à jour"
+
+#: account_bp/account.py:454
+msgid "Please add a profile photo before going ahead!"
+msgstr "Veuillez ajouter une photo de profil avant de continuer !"
+
+#: account_bp/account.py:454 riders_bp/riders.py:106 riders_bp/riders.py:151
+#: riders_bp/riders.py:160 riders_bp/riders.py:339
+msgid "Bad Request"
+msgstr "Mauvaise demande"
+
+#: account_bp/account.py:457
+msgid "Please select a ride option"
+msgstr "Veuillez sélectionner une option de trajet"
+
+#: account_bp/account.py:467
+msgid "Both photos are required"
+msgstr "Les deux photos sont requises"
+
+#: account_bp/account.py:483
+msgid "Driver profile requested successfully"
+msgstr "Profil de conducteur demandé avec succès"
+
+#: account_bp/account.py:502
+msgid "File too large (max: 10mb)"
+msgstr "Fichier trop volumineux (max : 10 Mo)"
+
+#: account_bp/account.py:510
+msgid "Currently unable to process your request"
+msgstr "Actuellement impossible de traiter votre demande"
+
+#: account_bp/account.py:522 account_bp/account.py:524
+msgid "Driver profile not found"
+msgstr "Profil de conducteur introuvable"
+
+#: account_bp/account.py:522
+msgid "Not Found"
+msgstr "Introuvable"
+
+#: account_bp/account.py:623
+msgid "Card"
+msgstr "Carte"
+
+#: account_bp/account.py:631
+msgid "6 hrs (maximum)"
+msgstr "6 heures (maximum)"
+
+#: account_bp/account.py:633
+msgid "3 minutes (minimum)"
+msgstr ""
+
+#: account_bp/account.py:635
+msgid "minutes"
+msgstr ""
+
+#: account_bp/account.py:643 account_bp/account.py:646
+#: account_bp/account.py:674 account_bp/account.py:677 riders_bp/riders.py:339
+#: riders_bp/riders.py:355
+msgid "We are currently unable to process this request"
+msgstr "Nous ne sommes actuellement pas en mesure de traiter cette demande"
+
+#: account_bp/account.py:643 account_bp/account.py:674
+msgid "An error occured"
+msgstr "Une erreur s'est produite"
+
+#: account_bp/account.py:669
+msgid "Receipt resent successfully"
+msgstr "Réception des symptômes réussie"
+
+#: account_bp/forms.py:17 account_bp/forms.py:23 account_bp/forms.py:27
+#: auth_bp/forms.py:39
+msgid "Update"
+msgstr "Mise à jour"
+
+#: account_bp/account_templates/manage.html:118 account_bp/forms.py:22
+#: account_bp/forms.py:54 admin_bp/admin_templates/driver-application.html:51
+#: auth_bp/forms.py:38
+msgid "Email"
+msgstr "E-mail"
+
+#: account_bp/account_templates/manage.html:117 account_bp/forms.py:26
+msgid "Phone Number"
+msgstr "numéro de téléphone"
+
+#: account_bp/forms.py:31 auth_bp/forms.py:43
+msgid "Old Password"
+msgstr "Ancien mot de passe"
+
+#: account_bp/forms.py:41 auth_bp/forms.py:44
+msgid "Reset Password"
+msgstr "Réinitialiser le mot de passe"
+
+#: account_bp/forms.py:45
+msgid "Set Password"
+msgstr "Définir le mot de passe"
+
+#: account_bp/forms.py:47
+msgid "Password Confirmation"
+msgstr "Confirmation du mot de passe"
+
+#: account_bp/forms.py:55 account_bp/forms.py:68 account_bp/forms.py:110
+#: templates/htmx/modals/add-paymethod-modal.html:43
+msgid "Add"
+msgstr "Ajouter"
+
+#: account_bp/forms.py:58
+msgid "Card Number"
+msgstr "numéro de carte"
+
+#: account_bp/forms.py:58
+msgid "Card number must be 16 digits"
+msgstr "le numéro de carte doit comporter 16 chiffres"
+
+#: account_bp/forms.py:59
+msgid "Format must be"
+msgstr "Le format doit être"
+
+#: account_bp/forms.py:63 account_bp/forms.py:89
+msgid "Format must be MM/YYYY"
+msgstr "Le format doit être MM/AAAA"
+
+#: account_bp/forms.py:66
+msgid "CVV must be 3 digits"
+msgstr "CVV doit être composé de 3 chiffres"
+
+#: account_bp/forms.py:67
+msgid "Country"
+msgstr "Pays"
+
+#: account_bp/forms.py:77
+msgid "Select Country"
+msgstr "Sélectionner un pays"
+
+#: account_bp/forms.py:93
+msgid "Month must be between 1 and 12"
+msgstr "Le mois doit être compris entre 1 et 12"
+
+#: account_bp/forms.py:96
+msgid "Year must be in the future"
+msgstr "L'année doit être dans le futur"
+
+#: account_bp/forms.py:105
+msgid "Please select a country"
+msgstr "Veuillez sélectionner un pays"
+
+#: account_bp/forms.py:108
+msgid "Bank Name"
+msgstr "Nom de la banque"
+
+#: account_bp/forms.py:108
+msgid "Bank Name must be between 2 and 50 characters"
+msgstr "Le nom de la banque doit comporter entre 2 et 50 caractères"
+
+#: account_bp/forms.py:109
+msgid "Account Number"
+msgstr "numéro de compte"
+
+#: account_bp/forms.py:109
+msgid "Account number must be between 10 and 50 characters"
+msgstr "Le numéro de compte doit comporter entre 10 et 50 caractères"
+
+#: account_bp/account_templates/manage.html:201 account_bp/forms.py:115
+#: admin_bp/admin_templates/driver-application.html:59
+msgid "License Number"
+msgstr "Numéro de licence"
+
+#: account_bp/forms.py:115
+msgid "License number must be 10 characters"
+msgstr "Le numéro de licence doit comporter 10 caractères"
+
+#: account_bp/account_templates/manage.html:202 account_bp/forms.py:117
+#: admin_bp/admin_templates/driver-application.html:60
+msgid "License Expiry Date"
+msgstr "Date d'expiration de la licence"
+
+#: account_bp/forms.py:123 admin_bp/admin_templates/driver-application.html:62
+msgid "License Photo"
+msgstr "Photo de licence"
+
+#: account_bp/account_templates/manage.html:209 account_bp/forms.py:124
+#: admin_bp/admin_templates/driver-application.html:69
+msgid "Vehicle Plate"
+msgstr "Plaque du véhicule"
+
+#: account_bp/forms.py:124
+msgid "Vehicle plate must be 7 characters"
+msgstr "La plaque du véhicule doit comporter 7 caractères"
+
+#: account_bp/account_templates/manage.html:211 account_bp/forms.py:125
+#: admin_bp/admin_templates/driver-application.html:71
+msgid "Vehicle Photo"
+msgstr "Photo du véhicule"
+
+#: account_bp/forms.py:126 chat_bp/chat_templates/chat_index.html:52
+msgid "Send"
+msgstr "Envoyer"
+
+#: account_bp/forms.py:135 riders_bp/forms.py:73 riders_bp/riders.py:106
+msgid "Invalid date format"
+msgstr "Format de date invalide"
+
+#: account_bp/forms.py:140
+msgid "License expiry date must be in the future"
+msgstr "La date d'expiration de la licence doit être postérieure"
+
+#: account_bp/account_templates/account_components.html:20
+msgid "Add the bank account where you want to receive payments."
+msgstr "Ajoutez le compte bancaire sur lequel vous souhaitez recevoir les paiements."
+
+#: account_bp/account_templates/account_components.html:21
+msgid "Add a bank account"
+msgstr "Ajouter un compte bancaire"
+
+#: account_bp/account_templates/account_components.html:102
+#: admin_bp/admin_templates/admin_components.html:27
+#: general_bp/general_templates/general_components.html:68
+msgid "Sign Out"
+msgstr "Déconnexion"
+
+#: account_bp/account_templates/manage.html:26
+#: account_bp/account_templates/manage.html:38
+msgid "Account Info"
+msgstr "Informations sur le compte"
+
+#: account_bp/account_templates/manage.html:27
+#: account_bp/account_templates/manage.html:123
+msgid "Security"
+msgstr "Sécurité"
+
+#: account_bp/account_templates/manage.html:28
+#: general_bp/general_templates/general_components.html:44
+msgid "Drive"
+msgstr "Conduire"
+
+#: account_bp/account_templates/manage.html:29
+#: general_bp/general_templates/general_components.html:42
+msgid "Home"
+msgstr "Accueil"
+
+#: account_bp/account_templates/manage.html:103
+msgid "Remove Photo"
+msgstr "Supprimer la photo"
+
+#: account_bp/account_templates/manage.html:113
+msgid "Basic Info"
+msgstr "Informations de base"
+
+#: account_bp/account_templates/manage.html:116
+#: admin_bp/admin_templates/driver-application.html:50
+msgid "Name"
+msgstr "Nom"
+
+#: account_bp/account_templates/manage.html:124
+msgid "Logging in to Uber"
+msgstr "Connexion à Uber"
+
+#: account_bp/account_templates/manage.html:126
+#: auth_bp/auth_templates/auth_htmx/code-options-modal.html:13
+#: auth_bp/forms.py:34 general_bp/forms.py:157
+msgid "Password"
+msgstr "Mot de passe"
+
+#: account_bp/account_templates/manage.html:129
+msgid "Set Up Your Driver Profile"
+msgstr "Configurer votre profil de conducteur"
+
+#: account_bp/account_templates/manage.html:134
+msgid "Pending Approval"
+msgstr "En attente d'approbation"
+
+#: account_bp/account_templates/manage.html:135
+msgid ""
+"Your driver profile is pending approval. You will be notified when it is "
+"approved"
+msgstr "Votre profil de conducteur est en attente d'approbation. "
+
+#: account_bp/account_templates/manage.html:147
+msgid "Upload your profile picture"
+msgstr "Téléchargez votre photo de profil"
+
+#: account_bp/account_templates/manage.html:149
+msgid "here"
+msgstr "ici"
+
+#: account_bp/account_templates/manage.html:149
+msgid "before proceeding"
+msgstr "avant de continuer"
+
+#: account_bp/account_templates/manage.html:164
+#: account_bp/account_templates/manage.html:200
+#: admin_bp/admin_templates/driver-application.html:58
+msgid "License Info"
+msgstr "Informations sur la licence"
+
+#: account_bp/account_templates/manage.html:175
+#: account_bp/account_templates/manage.html:208
+#: admin_bp/admin_templates/driver-application.html:68
+msgid "Vehicle Info"
+msgstr "Informations sur le véhicule"
+
+#: account_bp/account_templates/manage.html:180
+msgid "Select the option which best describes your vehicle"
+msgstr "Sélectionnez l'option qui décrit le mieux votre véhicule"
+
+#: account_bp/account_templates/manage.html:204
+msgid "License Photo:"
+msgstr "Photo de licence :"
+
+#: account_bp/account_templates/manage.html:215
+msgid "Vehicle class"
+msgstr "Classe de véhicule"
+
+#: account_bp/account_templates/settings.html:11
+msgid "Authorised applications."
+msgstr "Demandes autorisées."
+
+#: account_bp/account_templates/settings.html:12
+msgid "You do not have any authorised applications"
+msgstr "Vous n'avez aucune application autorisée"
+
+#: account_bp/account_templates/settings.html:13
+msgid "Log out"
+msgstr "Se déconnecter"
+
+#: account_bp/account_templates/single-payment-method.html:13
+#: templates/htmx/modals/add-paymethod-modal.html:36
+msgid "Credit or Debit Card"
+msgstr "Carte de crédit ou de débit"
+
+#: account_bp/account_templates/single-payment-method.html:37
+msgid "Preferred Payment Method"
+msgstr "Mode de paiement préféré"
+
+#: account_bp/account_templates/single-payment-method.html:48
+msgid "Remove payment method"
+msgstr "Supprimer le mode de paiement"
+
+#: account_bp/account_templates/single-payment-method.html:59
+msgid "Use as preferred"
+msgstr "Utiliser selon vos préférences"
+
+#: account_bp/account_templates/trip-details.html:14
+msgid "Back to Trips"
+msgstr "Retour aux voyages"
+
+#: account_bp/account_templates/trip-details.html:19
+#: account_bp/account_templates/trip-details.html:26
+msgid "Your trip"
+msgstr "Votre voyage"
+
+#: account_bp/account_templates/trip-details.html:64
+msgid "Resend receipt"
+msgstr "Renvoyer le reçu"
+
+#: account_bp/account_templates/trip-details.html:75
+msgid "Route"
+msgstr "Itinéraire"
+
+#: account_bp/account_templates/trips.html:12
+msgid "Past"
+msgstr "Passé"
+
+#: account_bp/account_templates/trips.html:20
+msgid "Rider Trips"
+msgstr "Voyages de cavaliers"
+
+#: account_bp/account_templates/trips.html:28
+msgid "Driver Trips"
+msgstr "Déplacements du conducteur"
+
+#: account_bp/account_templates/trips.html:49
+msgid "No trips here at the moment"
+msgstr "Aucun déplacement ici pour le moment"
+
+#: account_bp/account_templates/update.html:18
+msgid ""
+"Your password must be at least 8 characters long, and contain at least "
+"one digit and one non-digit character"
+msgstr "Votre mot de passe doit comporter au moins 8 caractères et contenir au moins un chiffre et un caractère non numérique."
+
+#: account_bp/account_templates/update.html:20
+msgid "Personalise your experience"
+msgstr "Personnalisez votre expérience"
+
+#: account_bp/account_templates/account_htmx/add-bank-account-modal.html:75
+#: account_bp/account_templates/wallet.html:21
+msgid "Bank Account: "
+msgstr "Compte bancaire :"
+
+#: account_bp/account_templates/wallet.html:30
+msgid "Payment Methods"
+msgstr "Modes de paiement"
+
+#: account_bp/account_templates/wallet.html:46
+msgid "Add new payment method"
+msgstr "Ajouter un nouveau mode de paiement"
+
+#: account_bp/account_templates/account_htmx/add-bank-account-modal.html:20
+msgid "Add Bank Account"
+msgstr "Ajouter un compte bancaire"
+
+#: account_bp/account_templates/account_htmx/add-bank-account-modal.html:37
+#: templates/htmx/modals/add-paymethod-modal.html:70
+msgid "Cancel"
+msgstr "Annuler"
+
+#: account_bp/account_templates/account_htmx/add-bank-account-modal.html:46
+msgid "Bank account Added"
+msgstr "Compte bancaire ajouté"
+
+#: account_bp/account_templates/account_htmx/add-bank-account-modal.html:57
+msgid "Bank Account Warning"
+msgstr "Avertissement concernant le compte bancaire"
+
+#: account_bp/account_templates/account_htmx/add-bank-account-modal.html:62
+msgid "You are only allowed one bank account."
+msgstr "Vous n’avez droit qu’à un seul compte bancaire."
+
+#: admin_bp/admin_templates/admin_verify-drivers.html:12
+msgid "Handle driver requests here."
+msgstr "Gérer les demandes de pilotes ici."
+
+#: admin_bp/admin_templates/admin_verify-drivers.html:21
+msgid "Requests"
+msgstr "Demandes"
+
+#: admin_bp/admin_templates/admin_verify-drivers.html:28
+msgid "History"
+msgstr "Histoire"
+
+#: admin_bp/admin_templates/admin_verify-drivers.html:48
+msgid "No applciations here"
+msgstr "Aucune application ici"
+
+#: admin_bp/admin_templates/driver-application.html:18
+msgid "Accept"
+msgstr "Accepter"
+
+#: admin_bp/admin_templates/driver-application.html:23
+msgid "Reject"
+msgstr "Rejeter"
+
+#: admin_bp/admin_templates/driver-application.html:34
+msgid "Handled by"
+msgstr "Géré par"
+
+#: admin_bp/admin_templates/driver-application.html:39
+#: templates/components/users.html:148
+msgid "Accepted"
+msgstr "Accepté"
+
+#: admin_bp/admin_templates/driver-application.html:42
+#: templates/components/users.html:151
+msgid "Rejected"
+msgstr "Rejeté"
+
+#: admin_bp/admin_templates/driver-application.html:49
+msgid "Driver Info"
+msgstr "Informations sur le conducteur"
+
+#: admin_bp/admin_templates/driver-application.html:53
+msgid "Phone"
+msgstr "Téléphone"
+
+#: admin_bp/admin_templates/driver-application.html:77
+msgid "Vehicle Class"
+msgstr "Classe de véhicule"
+
+#: auth_bp/forms.py:14
+msgid "Enter email"
+msgstr "Entrez l'e-mail"
+
+#: auth_bp/forms.py:15
+msgid "Continue"
+msgstr "Continuer"
+
+#: auth_bp/auth_templates/flow.html:17 riders_bp/forms.py:47
+msgid "Next"
+msgstr "Suivant"
+
+#: auth_bp/auth_templates/flow.html:32
+msgid "What's your email?"
+msgstr "Quel est votre email ?"
+
+#: auth_bp/auth_templates/flow.html:56
+msgid "Continue with Google"
+msgstr "Continuer avec Google"
+
+#: auth_bp/auth_templates/flow.html:57
+msgid "Continue with Apple"
+msgstr "Continuer avec Apple"
+
+#: auth_bp/auth_templates/flow.html:58
+msgid "Continue with Facebook"
+msgstr "Continuer avec Facebook"
+
+#: auth_bp/auth_templates/flow.html:64
+msgid "Log in with QR code"
+msgstr "Connectez-vous avec le code QR"
+
+#: auth_bp/auth_templates/flow.html:86
+msgid "What's your name?"
+msgstr "Quel est ton nom ?"
+
+#: auth_bp/auth_templates/flow.html:87
+msgid "Let us know how to properly address you."
+msgstr "Dites-nous comment vous adresser correctement."
+
+#: auth_bp/auth_templates/flow.html:139
+msgid "Admin Login"
+msgstr "Connexion administrateur"
+
+#: auth_bp/auth_templates/flow.html:142
+msgid "Welcome back,"
+msgstr "Bienvenue,"
+
+#: auth_bp/auth_templates/flow.html:181
+msgid "More Options"
+msgstr "Plus d'options"
+
+#: auth_bp/auth_templates/flow.html:189
+msgid "I've forgotten my password"
+msgstr "J’ai oublié mon mot de passe"
+
+#: auth_bp/auth_templates/auth_htmx/code-options-modal.html:7
+msgid "Choose another way to verify"
+msgstr "Choisissez une autre façon de vérifier"
+
+#: auth_bp/auth_templates/auth_htmx/code-options-modal.html:22
+msgid "Resend code via email"
+msgstr "Renvoyer le code par e-mail"
+
+#: chat_bp/chat.py:46
+msgid "Rider"
+msgstr "Cavalier"
+
+#: chat_bp/chat.py:62 chat_bp/chat.py:105
+msgid "No active ride found"
+msgstr "Aucun trajet actif trouvé"
+
+#: chat_bp/chat.py:67 chat_bp/chat.py:110
+msgid "Sorry we could not process this request"
+msgstr "Désolé, nous n'avons pas pu traiter cette demande"
+
+#: chat_bp/chat.py:72 chat_bp/chat.py:115 locations_bp/locations.py:57
+msgid "Server Error"
+msgstr "Erreur du serveur"
+
+#: chat_bp/chat_templates/chat_index.html:33
+msgid "End Chat"
+msgstr "Fin de la conversation"
+
+#: chat_bp/chat_templates/chat_index.html:48
+msgid "Write your message!"
+msgstr "Écrivez votre message !"
+
+#: chat_bp/chat_templates/ride_complete.html:5
+msgid "Ride Complete!"
+msgstr "Tour terminé !"
+
+#: drivers_bp/drivers.py:87
+msgid "No Riders available at the moment"
+msgstr "Aucun coureur disponible pour le moment"
+
+#: drivers_bp/drivers_templates/accept-ride.html:18
+msgid "We are notifying the rider!"
+msgstr "Nous prévenons le coureur !"
+
+#: drivers_bp/drivers_templates/drivers_index.html:12
+msgid "Find Riders"
+msgstr "Trouver des passagers"
+
+#: drivers_bp/drivers_templates/drivers_index.html:22 riders_bp/riders.py:364
+msgid "No available riders at this moment"
+msgstr "Aucun passager disponible pour le moment"
+
+#: general_bp/forms.py:39
+msgid "Invalid name"
+msgstr "Nom invalide"
+
+#: general_bp/forms.py:44
+msgid "Invalid email"
+msgstr "E-mail invalide"
+
+#: general_bp/forms.py:49
+msgid ""
+"Password must contain: at least 8 characters, 1 lower case, 1 uppercase, "
+"1 number and 1 special character"
+msgstr "Le mot de passe doit contenir : au moins 8 caractères, 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial"
+
+#: general_bp/forms.py:54
+msgid "Username must only contain letters, numbers, periods and underscores"
+msgstr "Le nom d'utilisateur ne doit contenir que des lettres, des chiffres, des points et des traits de soulignement."
+
+#: general_bp/forms.py:71
+msgid "is required"
+msgstr "est requis"
+
+#: general_bp/forms.py:144
+msgid "First Name"
+msgstr "Prénom"
+
+#: general_bp/forms.py:144
+msgid "First name must be less than 50 characters"
+msgstr "Le prénom doit contenir moins de 50 caractères"
+
+#: general_bp/forms.py:145
+msgid "Last Name"
+msgstr "Nom de famille"
+
+#: general_bp/forms.py:145
+msgid "Last name must be less than 50 characters"
+msgstr "Le nom de famille doit comporter moins de 50 caractères"
+
+#: general_bp/forms.py:159
+msgid "Passwords must match"
+msgstr "les mots de passe doivent correspondre"
+
+#: general_bp/forms.py:163
+msgid "Confirm Password"
+msgstr "Confirmer le mot de passe"
+
+#: general_bp/general_templates/general_components.html:15
+msgid "Company"
+msgstr "Entreprise"
+
+#: general_bp/general_templates/general_components.html:16
+msgid "Safety"
+msgstr "Sécurité"
+
+#: general_bp/general_templates/general_components.html:17
+#: templates/components/users.html:17
+msgid "Help"
+msgstr "Aide"
+
+#: general_bp/general_templates/general_components.html:39
+msgid "Products"
+msgstr "Produits"
+
+#: general_bp/general_templates/general_components.html:43
+#: general_bp/general_templates/index.html:89
+msgid "Ride"
+msgstr "Conduire"
+
+#: general_bp/general_templates/general_components.html:45
+#: general_bp/general_templates/index.html:76
+msgid "Eat"
+msgstr "Manger"
+
+#: general_bp/general_templates/general_components.html:92
+msgid "Log In"
+msgstr "Connexion"
+
+#: general_bp/general_templates/general_components.html:102
+msgid "Sign Up"
+msgstr "Inscrivez-vous"
+
+#: general_bp/general_templates/general_components.html:147
+msgid "Sign up to drive & deliver"
+msgstr "Inscrivez-vous pour conduire"
+
+#: general_bp/general_templates/general_components.html:147
+#: general_bp/general_templates/index.html:293
+msgid "Sign Up to ride"
+msgstr "Inscrivez-vous pour rouler"
+
+#: general_bp/general_templates/general_components.html:151
+msgid "Sign up to order delivery with Uber Eats"
+msgstr "Inscrivez-vous pour commander la livraison avec Uber Eats"
+
+#: general_bp/general_templates/general_components.html:152
+msgid "Sign Up to order delivery with Uber Eats"
+msgstr "Inscrivez-vous pour commander la livraison avec Uber Eats"
+
+#: general_bp/general_templates/general_components.html:161
+msgid "Sign in to drive & deliver"
+msgstr "Connectez-vous pour conduire"
+
+#: general_bp/general_templates/general_components.html:162
+msgid "Sign in to ride"
+msgstr "Connectez-vous pour rouler"
+
+#: general_bp/general_templates/general_components.html:166
+msgid "Sign in to order delivery with Uber Eats"
+msgstr "Connectez-vous pour commander une livraison avec Uber Eats"
+
+#: general_bp/general_templates/general_components.html:170
+#: general_bp/general_templates/index.html:285
+msgid "Drive & deliver"
+msgstr "Conduire"
+
+#: general_bp/general_templates/general_components.html:171
+#: general_bp/general_templates/index.html:286
+msgid "Ride with uber"
+msgstr "Roulez avec Uber"
+
+#: general_bp/general_templates/general_components.html:176
+msgid "Order delivery with Uber Eats"
+msgstr "Livraison de commande avec Uber Eats"
+
+#: general_bp/general_templates/general_components.html:176
+msgid "Uber for Business"
+msgstr "Uber pour les entreprises"
+
+#: general_bp/general_templates/general_components.html:180
+#: templates/components/users.html:28
+msgid "Manage Account"
+msgstr "Gérer le compte"
+
+#: general_bp/general_templates/general_components.html:185
+msgid "Select your language"
+msgstr "Sélectionnez votre langue"
+
+#: general_bp/general_templates/general_components.html:192
+msgid "English"
+msgstr "anglais"
+
+#: general_bp/general_templates/general_components.html:195
+msgid "French"
+msgstr "français"
+
+#: general_bp/general_templates/general_components.html:198
+msgid "Spanish"
+msgstr "espagnol"
+
+#: general_bp/general_templates/general_components.html:201
+msgid "German"
+msgstr "allemand"
+
+#: general_bp/general_templates/index.html:30
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: general_bp/general_templates/index.html:42
+msgid "Verify Drivers"
+msgstr "Vérifier les pilotes"
+
+#: general_bp/general_templates/index.html:64
+msgid "Drive or deliver"
+msgstr "Conduire ou livrer"
+
+#: general_bp/general_templates/index.html:118
+msgid "Go to your dashboard now!"
+msgstr "Accédez à votre tableau de bord maintenant !"
+
+#: general_bp/general_templates/index.html:119
+msgid "Monitor requests, events and customize application data!"
+msgstr "Surveillez les demandes, les événements et personnalisez les données de l'application !"
+
+#: general_bp/general_templates/index.html:120
+msgid "Get to work"
+msgstr "Mettez-vous au travail"
+
+#: general_bp/general_templates/index.html:125
+msgid "Start Verifying drivers"
+msgstr "Commencer à vérifier les pilotes"
+
+#: general_bp/general_templates/index.html:126
+msgid "Handle driver applciations in your admin portal"
+msgstr "Gérer les applications de pilote dans votre portail d'administration"
+
+#: general_bp/general_templates/index.html:127
+msgid "View driver applciations"
+msgstr "Afficher les applications du pilote"
+
+#: general_bp/general_templates/index.html:138
+msgid "Get in the driver's seat and get paid"
+msgstr "Prenez le volant et soyez payé"
+
+#: general_bp/general_templates/index.html:139
+msgid "Order delivery from restaurants you love"
+msgstr "Livraison de commandes dans les restaurants que vous aimez"
+
+#: general_bp/general_templates/index.html:142
+msgid "Start driving now"
+msgstr "Commencez à conduire maintenant"
+
+#: general_bp/general_templates/index.html:144
+msgid "Sign up to drive"
+msgstr "Inscrivez-vous pour conduire"
+
+#: general_bp/general_templates/index.html:146
+msgid "Learn more about driving and delivering"
+msgstr "En savoir plus sur la conduite et la livraison"
+
+#: general_bp/general_templates/index.html:153
+msgid "Discover delicious eats"
+msgstr "Découvrez de délicieux plats"
+
+#: general_bp/general_templates/index.html:154
+msgid "Order delivery from restaurants you love."
+msgstr "Commandez la livraison dans les restaurants que vous aimez."
+
+#: general_bp/general_templates/index.html:155
+msgid "Order now"
+msgstr "Commandez maintenant"
+
+#: general_bp/general_templates/index.html:156
+msgid "Own a restaurant? Partner with Uber Eats"
+msgstr "Vous possédez un restaurant ? "
+
+#: general_bp/general_templates/index.html:161
+msgid "Request a ride now"
+msgstr "Demander un trajet maintenant"
+
+#: general_bp/general_templates/index.html:166
+msgid "Enter pickup location"
+msgstr "Entrez le lieu de prise en charge"
+
+#: general_bp/general_templates/index.html:169
+msgid "Enter dropoff location"
+msgstr "Entrez le lieu de dépôt"
+
+#: general_bp/general_templates/index.html:174
+msgid "Request now"
+msgstr "demander maintenant"
+
+#: general_bp/general_templates/index.html:175
+msgid "Schedule for later"
+msgstr "Programmer pour plus tard"
+
+#: general_bp/general_templates/index.html:242
+msgid "The Uber you know, reimagined for business"
+msgstr "L'Uber que vous connaissez, réinventé pour les entreprises"
+
+#: general_bp/general_templates/index.html:243
+msgid ""
+"A platform for managing gloabl rides and meals, and local deliveries, for"
+" companies of any size"
+msgstr "Une plateforme de gestion des courses et des repas mondiaux, ainsi que des livraisons locales, pour les entreprises de toute taille"
+
+#: general_bp/general_templates/index.html:244
+msgid "Get Started"
+msgstr "Commencer"
+
+#: general_bp/general_templates/index.html:255
+msgid "About Us"
+msgstr "À propos de nous"
+
+#: general_bp/general_templates/index.html:256
+msgid ""
+"Find out how we started, what drives us, and how we're reimagining how "
+"the world moves."
+msgstr "Découvrez comment nous avons commencé, ce qui nous motive et comment nous réinventons la façon dont le monde évolue."
+
+#: general_bp/general_templates/index.html:257
+msgid "Learn more about Ubers"
+msgstr "En savoir plus sur Ubers"
+
+#: general_bp/general_templates/index.html:262
+msgid "Newsroom"
+msgstr "Salle de presse"
+
+#: general_bp/general_templates/index.html:263
+msgid ""
+"See announcements about our latest releases, initiatives, and "
+"partnerships."
+msgstr "consultez les annonces concernant nos dernières versions, initiatives et partenariats."
+
+#: general_bp/general_templates/index.html:264
+msgid "Go to Newsroom"
+msgstr "Aller à la salle de rédaction"
+
+#: general_bp/general_templates/index.html:269
+msgid "Global citizenship"
+msgstr "Citoyenneté mondiale"
+
+#: general_bp/general_templates/index.html:270
+msgid ""
+"Read about our commitment to making a positive impact in the cities we "
+"serve."
+msgstr "Découvrez notre engagement à avoir un impact positif dans les villes que nous servons."
+
+#: general_bp/general_templates/index.html:271
+msgid "See our partnerships"
+msgstr "Voir nos partenariats"
+
+#: general_bp/general_templates/index.html:292
+msgid "Sign Up to drive & deliver"
+msgstr "Inscrivez-vous pour conduire"
+
+#: general_bp/general_templates/index.html:306
+msgid "Back to top"
+msgstr "Retour en haut"
+
+#: locations_bp/locations.py:57
+msgid "We are currently unable to process you request. Please try again later"
+msgstr "Nous ne sommes actuellement pas en mesure de traiter votre demande. "
+
+#: locations_bp/locations_templates/locations_htmx/search-results.html:18
+msgid "No search results at the moment"
+msgstr "Aucun résultat de recherche pour le moment"
+
+#: riders_bp/forms.py:14
+msgid "Pickup location"
+msgstr "Lieu de prise en charge"
+
+#: riders_bp/forms.py:15
+msgid "Dropoff location"
+msgstr "Lieu de dépôt"
+
+#: riders_bp/forms.py:16
+msgid "Pickup Now"
+msgstr "Récupérer maintenant"
+
+#: riders_bp/forms.py:17
+msgid "Search"
+msgstr "Recherche"
+
+#: riders_bp/forms.py:30
+msgid "Invalid pickup details"
+msgstr "Détails de ramassage invalides"
+
+#: riders_bp/forms.py:40
+msgid "Today"
+msgstr "Aujourd'hui"
+
+#: riders_bp/forms.py:46
+msgid "Pickup Time"
+msgstr "heure de ramassage"
+
+#: riders_bp/forms.py:56
+msgid "Now"
+msgstr "Maintenant"
+
+#: riders_bp/forms.py:77
+msgid "Pick-up date must be in the future"
+msgstr "La date de prise en charge doit être postérieure"
+
+#: riders_bp/forms.py:80
+msgid "Pick-up date must be within 90 days"
+msgstr "La date de ramassage doit être dans les 90 jours"
+
+#: riders_bp/forms.py:92
+msgid "Pick-up time must be in the future"
+msgstr "L'heure de prise en charge doit être dans le futur"
+
+#: riders_bp/riders.py:52
+msgid "Pickup now"
+msgstr "Récupérer maintenant"
+
+#: riders_bp/riders.py:91
+msgid "Pickup"
+msgstr "Prise en charge"
+
+#: riders_bp/riders.py:91
+msgid "now"
+msgstr "maintenant"
+
+#: riders_bp/riders.py:143
+msgid "Invalid pickup data"
+msgstr "Données de collecte invalides"
+
+#: riders_bp/riders.py:151 riders_bp/riders.py:153
+msgid "Invalid pickup location"
+msgstr "Lieu de retrait invalide"
+
+#: riders_bp/riders.py:158
+msgid "Invalid dropoff location"
+msgstr "Lieu de dépôt invalide"
+
+#: riders_bp/riders.py:249
+msgid "Invalid payment method"
+msgstr "Mode de paiement invalide"
+
+#: riders_bp/riders.py:275
+msgid "Missing info"
+msgstr "Informations manquantes"
+
+#: riders_bp/riders.py:335
+msgid "Invalid Data"
+msgstr "Données invalides"
+
+#: riders_bp/riders_templates/rider_search.html:25
+msgid "Cancel Request"
+msgstr "Annuler la demande"
+
+#: riders_bp/riders_templates/riders_index.html:13
+msgid "Find a trip"
+msgstr "Trouver un voyage"
+
+#: riders_bp/riders_templates/riders_index.html:55
+#: riders_bp/riders_templates/riders_index.html:84
+msgid "Set location on map"
+msgstr "Définir l'emplacement sur la carte"
+
+#: riders_bp/riders_templates/riders_index.html:122
+msgid "Choose a ride"
+msgstr "Choisissez un trajet"
+
+#: riders_bp/riders_templates/riders_index.html:138
+msgid "Recommended"
+msgstr "recommandé"
+
+#: riders_bp/riders_templates/riders_index.html:144
+msgid "Popular"
+msgstr "Populaire"
+
+#: riders_bp/riders_templates/riders_index.html:150
+msgid "More"
+msgstr "Plus"
+
+#: riders_bp/riders_templates/riders_index.html:186
+msgid "Pay"
+msgstr "Payer"
+
+#: riders_bp/riders_templates/riders_index.html:191
+msgid "Request"
+msgstr "Demande"
+
+#: riders_bp/riders_templates/riders_index.html:201
+msgid "There was an error, Something is not right."
+msgstr "Une erreur s'est produite. Quelque chose ne va pas."
+
+#: riders_bp/riders_templates/riders_index.html:201
+msgid "Please try again later or try changing the pick-up or drop-off location."
+msgstr "Veuillez réessayer plus tard ou essayez de modifier le lieu de prise en charge ou de dépôt."
+
+#: riders_bp/riders_templates/riders_htmx/ride_details_form.html:26
+msgid "Clear"
+msgstr "Effacer"
+
+#: riders_bp/riders_templates/riders_htmx/ride_details_form.html:30
+msgid "When do you want to be picked up?"
+msgstr "Quand souhaitez-vous être récupéré ?"
+
+#: riders_bp/riders_templates/riders_htmx/ride_details_form.html:46
+msgid "Choose your exact pickup time up to 90 days in advance"
+msgstr "Choisissez votre heure exacte de prise en charge jusqu'à 90 jours à l'avance"
+
+#: riders_bp/riders_templates/riders_htmx/ride_details_form.html:47
+msgid "Extra wait time included to meet your ride"
+msgstr "Temps d'attente supplémentaire inclus pour rencontrer votre trajet"
+
+#: riders_bp/riders_templates/riders_htmx/ride_details_form.html:48
+msgid "Cancel at no charge up to 60 minutes in advance"
+msgstr "Annulation sans frais jusqu'à 60 minutes à l'avance"
+
+#: riders_bp/riders_templates/riders_htmx/select-paymethod-modal.html:16
+msgid "Payment Options"
+msgstr "Options de paiement"
+
+#: templates/components/users.html:12
+msgid "Trip"
+msgstr "Déplacement"
+
+#: templates/components/users.html:26
+msgid "My Trips"
+msgstr "Mes déplacements"
+
+#: templates/components/users.html:27
+msgid "Wallet"
+msgstr "Portefeuille"
+
+#: templates/components/users.html:29
+msgid "Settings"
+msgstr "Paramètres"
+
+#: templates/components/users.html:100
+msgid " Pickup"
+msgstr "ramassage"
+
+#: templates/components/users.html:108
+msgid "Accept Ride"
+msgstr "Accepter le trajet"
+
+#: templates/components/users.html:141
+msgid "Applied at"
+msgstr "Appliqué à"
+
+#: templates/components/users.html:155
+msgid "View Driver Application"
+msgstr "Afficher l'application du pilote"
+
+#: templates/htmx/modals/add-paymethod-modal.html:10
+msgid "Add a payment method"
+msgstr "Ajouter un mode de paiement"
+
+#: templates/htmx/modals/add-paymethod-modal.html:23
+msgid "Credit or Debit card"
+msgstr "Carte de crédit ou de débit"
+
+#: templates/htmx/modals/add-paymethod-modal.html:33
+msgid "Account"
+msgstr "Compte"
+
+#: templates/htmx/modals/add-paymethod-modal.html:83
+msgid "Payment Method Added"
+msgstr "Mode de paiement ajouté"
+
+#: templates/htmx/modals/add-paymethod-modal.html:94
+msgid "Payment Method Warning"
+msgstr "Avertissement relatif au mode de paiement"
+
+#: templates/htmx/modals/add-paymethod-modal.html:99
+msgid "You have reached the maximum number of payment methods allowed."
+msgstr "Vous avez atteint le nombre maximum de modes de paiement autorisés."
+
+#: templates/htmx/modals/add-paymethod-modal.html:100
+msgid "If you realy want to add a new payment method, please go to"
+msgstr "Si vous souhaitez réellement ajouter un nouveau mode de paiement, veuillez vous rendre sur"
+
+#: templates/htmx/modals/add-paymethod-modal.html:100
+msgid "your wallet"
+msgstr "votre portefeuille"
+
+#: templates/htmx/modals/add-paymethod-modal.html:100
+msgid "and remove at least one one."
+msgstr "et supprimez-en au moins un."
+
+
+
+

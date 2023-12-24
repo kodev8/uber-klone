@@ -1,0 +1,109 @@
+{% from 'icons.html' import paypal, paymethod_card, circle_check, warning_sign %}
+{% from 'components/modal.html' import modalBG %}
+{% from 'components/forms.html' import customInput %}
+
+
+{% from 'components/general.html' import customButton %}
+
+{% macro modalContent() %}
+
+    <div class="flex flex-col gap-6 p-6">
+        <span class="col-span-full text-xl"> {{ message }} </span>
+
+            {{ customButton("Confirm Delete", size="md", hx_props={
+                'hx-delete':url_for('inter.account.remove_payment_method', paymethod=paymethodId)
+            }) }}
+        
+        {{ customButton("Cancel",variant="light", onclick="closeModal()", size="md") }}
+        
+   
+    </div>
+    
+{% endmacro %}
+
+{% macro modalFormContent(form) %}
+
+
+    {% if method=='paypal' %}
+        {% set header = 'Paypal Account' %}
+        {% set icon = paypal() %}
+    {% elif method =='card' %}
+        {% set  header =  "Credit or Debit Card" %}
+        {% set icon = payment_method() %}
+    {% endif %}
+
+    <div id="modal-content" class="flex flex-col gap-6 p-6">
+
+    
+        <h4 class="col-span-full text-xl font-extrabold">Add {{ header }}</h4>
+
+        <form class="grid md:grid-cols-2 gap-6 p-6"
+        hx-post="{{ url_for('inter.account.add_payment_method_type', method=method) }}" 
+        hx-target="#modal-content"
+        hx-select="#modal-content"
+        >
+        
+
+            {% set props = {} %}
+            {% for field in form %}
+
+                {% if field.type != "SubmitField" %}
+                    
+                    {% if field.id in ['card_number', 'country', 'zip_code','email'] %}
+                        {% set _= props.__setitem__("span_full", true) %}
+                    {% endif %}     
+                    {{ customInput(field, props=props,)}}
+
+                {% endif %}
+
+            {% endfor %}
+        
+            {{ customInput(form.add, props={'classes':"form-submitter w-full rounded-lg col-span-full", 'disabled':true, 'size':'lg'}) }}
+            {{ customButton('Cancel', variant="super-light", classes="w-full rounded-lg col-span-full", size='lg', as_submit=false, 
+            hx_props={'hx-get':url_for('close_modal'), 'hx-target':"#modal-bg" ,'hx-swap':"outerHTML" }) }}
+        </form>
+
+    </div>
+
+
+{% endmacro %}
+
+
+{% macro modalSuccessContent() %}
+    
+    <div id="modal-content" class="flex flex-col gap-6 p-6">
+        <h4 class="col-span-full text-xl font-extrabold">Payment Method Added</h4>
+
+        <div class="flex items-center justify-center">
+            {{ circle_check(width="4em", height="4em", view=24) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro modalExceedContent() %}
+
+    <div id="modal-content" class="flex flex-col gap-6 p-6">
+        <h4 class="col-span-full text-xl font-extrabold">Payment Method Warning</h4>
+
+        <div class="flex items-center justify-center">
+            {{ warning_sign()}}
+        </div>
+        <p class="text-center">You have reached the maximum number of payment methods allowed.</p>
+        <p>If you realy want to add a new payment method, please go to <a hx-boost='false' href="{{ url_for('inter.account.wallet') }}" class="underline text-blue-400">your wallet</a> and remove at least one one.</p>
+    </div>
+    
+{% endmacro %}
+
+
+{% if form %}
+    {% set final_content = modalFormContent(form)  %}
+{% elif success == true %}
+    {% set final_content = modalSuccessContent()  %}
+{% elif exceed_warning == true %}
+    {% set final_content = modalExceedContent() %}
+{% else %}
+    {% set final_content = modalContent()  %}
+{% endif %}
+
+
+{{modalBG(show=true, content=final_content)}}

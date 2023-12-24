@@ -1,0 +1,204 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'components/general.html' import customButton, spacedText %}
+{% from 'icons.html' import arrow, google, apple, facebook, qr_code %}
+
+
+{% macro buttonContainer(start_url=url_for('inter.auth.auth_flow')) %}
+
+   <div class="w-full flex justify-between">
+
+      {{ customButton('', variant='light', classes="w-fit rounded-full h-12 w-12 items-center justify-center", icon_svg=arrow(width=24, height=24, view=24, classes="rotate-180"), as_submit=false, 
+      hx_props={
+         'hx-get':url_for('inter.auth.confirm_back'),
+         'hx-target':'#modal-bg',
+         'hx-swap':'outerHTML',
+         'hx-select':'unset',
+         'hx-trigger':'click',
+      }
+      ) }}
+
+      <span class="text-xs">{{ customButton(_("Next"),id="auth-next", classes="form-submitter w-fit rounded-full", disabled=true, icon_svg_right=arrow(width=24, height=24, view=24) ) }}</span>
+   </div>
+
+   
+{% endmacro %}
+{% extends 'templates/auth_layout.html' %}
+
+
+{% block auth_content %}
+
+      {# INITIAL PAGE #}
+      {% if step == 1 %}
+         
+            <div id="auth-content" class="flex flex-col">
+               <h2 class="text-xl mb-3 font-medium">{{ _("What's your email?") }}</h2>
+
+               <form 
+               method="POST"
+               novalidate
+               hx-target-4*="{% for field in form %}#{{field.id}}-error{% if not loop.last %},{% endif %}{% endfor %},#messages"
+               hx-target="#page-content"
+               hx-select=".notif,#page-content"
+               hx-swap="innerHTML show:window:top"
+               hx-indicator=".htmx-base-indicator"
+               hx-vals="js:{'swp':swp()}"
+               hx-history="false"
+               class="flex flex-col gap-2">
+
+                  {% for field in form %}
+                     {{ customInput(field, props={'size':'lg'}) }}
+                  {% endfor %}
+
+               </form>
+
+               {{ spacedText('or') }}
+
+               <div class="flex flex-col gap-y-3">
+                  
+                  {{ customButton(_("Continue with Google"), variant='light',size="lg",  icon_svg=google() ) }}
+                  {{ customButton(_("Continue with Apple"), variant='light',size="lg",  icon_svg=apple() ) }}
+                  {{ customButton(_("Continue with Facebook"), variant='light', size="lg", icon_svg=facebook() ) }}
+
+               </div>
+
+               {{ spacedText('or') }}
+
+               {{ customButton(_("Log in with QR code"), color="bg-white", hoverColor="bg-gray-200",size="lg", icon_svg=qr_code(), classes="text-black px-8 rounded-md") }}
+
+
+         </div>
+
+      {# CODE PAGE #}
+      {% elif step == 2 %}
+
+         <div id="auth-content" class="flex flex-col gap-y-8 sm:max-w-[450px] font-medium">
+               
+            {% include 'htmx/code-verify.html' %}
+
+            {{ buttonContainer(start_url) }}
+         </div>
+
+
+      {# NAME PAGE #}
+      {% elif step == 3 %}
+         <div class="flex flex-col gap-y-12 sm:max-w-[450px] font-medium">
+
+               
+            <div class="flex flex-col gap-y-3">
+               <h2 class="text-xl font-bold">{{ _("What's your name?") }}</h2>
+               <p class="text-sm">{{ _("Let us know how to properly address you.") }}</p>
+            </div>
+            
+               <form 
+              
+               method="POST" 
+               action="{{ url_for('inter.auth.register') }}"
+               hx-push-url="false"
+               hx-target-4*="{% for field in form %}#{{field.id}}-error{% if not loop.last %},{% endif %}{% endfor %},#messages"
+               hx-select="#code-form"
+               hx-swap="outerHTML"
+               hx-history="false"
+               class="flex flex-col gap-y-4">
+                  
+                  {% for field in form %}
+                  
+                        {{ customInput(field, props={
+                           'size':'lg',
+                           'classes':'w-full col-span-full',
+                           'outertext':field.label.text,
+                           'placeholder':"Enter your " + field.label.text.lower() 
+                            
+                        }) }}
+                  {% endfor %}
+
+                   <div class="mt-6">{{ buttonContainer() }}</div>
+               </form>
+
+         </div>
+
+
+      <script>
+            allinputs = document.querySelectorAll('.custom-input-x')
+            allinputs.forEach(input => {
+               input.addEventListener('input', (e) => {
+                if(Array.from(allinputs).some(input => input.value.length === 0)){
+                  document.querySelector('#auth-next').disabled = true
+                  }else{
+                     document.querySelector('#auth-next').disabled = false
+                  }
+               })
+            })
+      </script>
+
+
+      {# Password Login Page #}
+      {% elif step == 4 %}
+
+         <div id="auth-content" class="flex flex-col gap-y-12 sm:max-w-[450px] font-medium">
+                  
+            <div class="text-4xl font-bold">
+               {% if admin %}
+               <h1>{{ _("Admin Login") }}</h1>
+                  
+               {% endif %}
+               <h2>{{ _("Welcome back,") }} {{ user.fname }} </h2>
+            </div>
+
+
+            <div id="auth-flow-form" 
+            class="flex flex-col gap-y-2">
+               <form 
+               method="POST" 
+               action="{{ url_for('inter.auth.login_password') }}"
+               hx-push-url="false"
+               hx-target-4*="#messages"
+               hx-target="body"
+               hx-swap="innerHTML"
+               hx-history="false"
+               >
+               {% for field in form %}
+                     
+               {{ customInput(field, props={
+                  'size':'lg',
+                  'classes':'w-full col-span-full',
+                  'text':"Enter your " + field.label.text.lower() 
+                  
+               }) }}
+
+               {% endfor %}
+
+               {# user login (not allowed for admin) #}
+               {% if not admin %}
+                  
+                  <div class="flex flex-col gap-y-3 mt-4">
+   
+                     {# From password back to code #}
+                     <span hx-get="{{ url_for('inter.auth.verify_options', with_code=true) }}" hx-target="#modal-bg" hx-swap="outerHTML">
+                        {{ customButton(_("More Options"), variant='light',classes="w-fit rounded-full font-medium",size="md", as_submit=false) }}
+                     </span>  
+                     
+                     <span
+                        hx-get="{{ url_for('inter.auth.resend_code', with_page=true) }}"
+                        hx-swap="multi:#messages:innerHTML,#auth-content:outerHTML"
+                        hx-select="#auth-content,#messages"
+                     >
+                        {{ customButton(_("I've forgotten my password"), variant='light',classes="w-fit rounded-full font-medium",size="md", as_submit=false) }}
+                     </span>
+                  </div>
+               {% endif %}
+                  
+
+               <div class="my-6">
+                  {{ buttonContainer() }}
+               </div>
+               </form>
+            </div>
+
+            
+        
+         
+         </div>
+      
+      {% endif %}
+
+{% endblock auth_content %}

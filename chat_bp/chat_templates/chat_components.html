@@ -1,0 +1,40 @@
+{% macro chatBlock(is_sender, user,  text) %}
+
+        {% if not is_sender %}
+
+            <div class="chat-message">
+                <div class="flex items-end">
+                <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
+                    <div id="message-only"><span class="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">{{ text }}</span></div>
+                </div>
+                <img  src="{% if user.profile_pic %}{{ url_for('profile_upload', filename=user.build_path('profile', 'profile.png')) }}{% else %}{{ url_for('static', filename='assets/default-user.jpeg') }}{% endif %}"
+                        class="w-6 h-6 rounded-full order-1">
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="chat-message">
+                <div class="flex items-end justify-end">
+                <div class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
+                    <div id="message-only"><span class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">{{ text }}</span></div>
+                </div>
+                <img src="{% if user.profile_pic %}{{ url_for('profile_upload', filename=user.build_path('profile', 'profile.png')) }}{% else %}{{ url_for('static', filename='assets/default-user.jpeg') }}{% endif %}" class="w-6 h-6 rounded-full order-2">
+                </div>
+            </div>
+            
+        {% endif %}
+       
+    
+{% endmacro %}
+
+{% macro chatSingle(is_sender, text) %}
+
+        {% if is_sender %}
+            <div><span class="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">{{ text }}</span></div>
+        {% else %}
+            <div><span class="px-4 py-2 rounded-lg inline-block bg-blue-600 text-white">{{ text }}</span></div>
+        {% endif %}
+    
+{% endmacro %}
+

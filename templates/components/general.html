@@ -1,0 +1,138 @@
+s{% from 'icons.html' import location_dot %}
+
+<!-- SEARCH LOCATIONS-->
+{% macro searchLocation(location, type) -%}
+  <div onclick="createMarkerFromElement(this)"
+      data-type="{{ type }}"
+      data-lat="{{ location.lat }}"
+      data-lon="{{ location.lon }}"
+      data-osm_id="{{ location.osm_id }}"
+      class=" pl-4 location-result hover:bg-gray-200 py-3 flex w-full border-b border-slate-200 gap-2 items-center cursor-pointer">
+      <div class="rounded-full p-2 bg-gray-300">
+        {{ location_dot() }}
+      </div>
+      <div>
+        <h4 class="title font-medium">{{ location.display_place }}</h4>
+        <p class="title text-sm">{{ location.display_address }}</p>
+      </div>
+      
+  </div>
+{%- endmacro %}
+
+<!-- CUSTOM BUTTON -->
+{% macro customButton(
+        text,
+        id=none,
+        variant='normal',
+        size='md',
+        color=none,
+        hoverColor=none, 
+        icon=none, 
+        icon_svg=none, 
+        icon_right=none,
+        icon_svg_right=none,
+        classes=none, 
+        as_submit=true,
+        disabled=false,
+        onclick=none, 
+        center_text=true,
+        hx_props={}
+         ) 
+    -%}
+
+    {% set variants = {
+      'normal':"bg-black text-white hover:bg-gray-700",
+      'light':"bg-gray-200 hover:bg-gray-300 text-black",
+      'super-light':"bg-white hover:bg-gray-200 text-black"
+
+    } %}
+
+    {% set sizes = {
+      'sm':"px-2 py-1 text-xs",
+      'md':"px-4 py-2 text-sm",
+      'lg':"px-8 py-3 text-base"
+    } %}
+
+    {% if not classes %}
+      {% set classes = "w-full rounded-md" %}
+    {% endif %}
+
+    {% set styles = "" %}
+    {% if (color and hoverColor and classes) %}
+      {% set styles = color + ' hover:' + hoverColor %}
+
+    {% elif variant and variants.get(variant) %}
+
+      {% set styles = variants.get(variant, "") %}
+    {% endif %}
+
+    {% set styles = styles + " " + (classes or " ") + " " + sizes.get(size, "") %}
+
+
+  <button
+    {% if not as_submit -%} type="button" {%- endif %} 
+    {% if disabled -%} disabled {%- endif %} 
+    {% if id -%} id="{{id}}" {%- endif %} 
+    {% if onclick -%} onclick="{{onclick}}" {%- endif %}
+      {# grid grid-cols-[auto_1fr_auto] place-items-center  #}
+    class="relative inline-flex items-center justify-center {{styles}} transition-colors disabled:bg-gray-200/75"
+    {% for key, value in hx_props.items() %}{{ key }}="{{ value }}"{% endfor %}
+  >
+    {% if icon -%}
+    <i class="{{icon}} "></i>
+
+    {% elif icon_svg -%}
+      <span class="">
+       {{ icon_svg }}
+      </span>
+    {%- endif %}
+
+    {% if text and text != "" %}
+      <span class="text col-start-2 px-2 {% if not center_text%} justify-self-start {% endif %}">{{text}}</span>
+    {% endif %}
+
+    {% if icon_right -%}
+      <i class="{{icon_right}} ml-4"></i>
+    {% elif icon_svg_right -%}
+      <span class="">
+       {{ icon_svg_right }}
+      </span>
+    {%- endif %}
+
+  </button>
+
+{%- endmacro %}
+
+{% macro separator(colspan=none) %}
+<div class="
+col-span-{% if not colspan%}full{%else%}{{colspan}}{%endif%}
+border-t border-t-gray-400 border-t-solid my-2"></div>
+
+{% endmacro %}
+
+{% macro spacedText(text, color="slate",bg_color="white", size='xs') %}
+
+<div class="w-full relative  border-b-2 border-b-solid border-b-{{color}}-200 my-6">
+  <span class="bg-{{bg_color}} px-4 text-{{size}} text-{{color}}-400 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"> {{text}} </span>
+</div>
+  
+{% endmacro %}
+
+{% macro title(text) %}
+  <title> {{ text or 'Uber' }} </title>
+{% endmacro %}
+
+
+{% macro profilePhoto(user) %}
+
+<div class="w-full h-full flex items-center justify-center">
+  {# icon effectilvely useless since clicking on the modal closes it #}
+  <i class="fa-solid fa-xmark absolute top-6 right-6 text-md bg-slate-300 hover:bg-sky-400 text-slate-500 flex items-center justify-center rounded-full w-6 h-6 cursor-pointer"></i>
+  <img
+    class="rounded-[50%] h-[300px] w-[300px] object-cover place-self-center flex items-center justify-center hover:brightness-[80%] transition-[filter] ease duration-300"
+    src="{{ url_for('inter.upload', filename=user.build_path('profile', 'profile.png')) }}"
+    alt=""
+  />
+</div>
+{% endmacro %}
+

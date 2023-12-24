@@ -1,0 +1,22 @@
+{% from 'account_components.html' import manageNavbar, manageSubnavTab, manageAction %}
+{% from 'icons.html' import plus, caret_down %}
+
+{% extends 'templates/base.html' %} 
+
+  {% block content %}
+
+  <div id="main" class="w-full h-full grid grid-rows-[auto_1fr]" >
+    
+    {{ manageNavbar() }}
+    
+    <div id="page-content" hx-swap="outerHTML show:window:top" class="w-full h-full md:grid md:grid-cols-12 relative  gap-x-3">
+      {% block page_content %}
+        
+      {% endblock page_content %}
+
+    </div>
+
+  </div>
+
+
+{% endblock content %}

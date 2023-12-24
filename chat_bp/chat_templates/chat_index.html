@@ -1,0 +1,100 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'icons.html' import pickup, destination, clock, caret_down, circle_xmark, arrow, person, location, map_location, warning_sign, paypal, paymethod_card, search %}
+{% from 'components/general.html' import customButton  %}
+{% from 'chat_components.html' import chatBlock %}
+
+{% extends 'templates/users_layout.html' %}
+
+{% block page_content %}
+
+<div class="col-span-full w-full">
+<div class="flex-1 p:2 sm:p-6 justify-between flex flex-col h-[80vh]">
+    <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
+      
+       <div class="relative flex items-center space-x-4">
+          <div class="relative">
+             <span class="absolute text-green-500 right-0 bottom-0">
+                <svg width="20" height="20">
+                   <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
+                </svg>
+             </span>
+             <img  src="{% if recipient.profile_pic %}{{ url_for('profile_upload', filename=recipient.build_path('profile', 'profile.png')) }}{% else %}{{ url_for('static', filename='assets/default-user.jpeg') }}{% endif %}"
+             alt="" class="w-10 sm:w-16 h-10 sm:h-16 rounded-full">
+          </div>
+          
+          <div class="flex flex-col leading-tight">
+             <div class="text-2xl mt-1 flex items-center">
+                <span class="text-gray-700 mr-3">{{ recipient.display_name() }}</span>
+             </div>
+             <span class="text-lg text-gray-600">{{ recipient.ride_role }} </span>
+          </div>
+       </div>
+       <div class="flex items-center space-x-2">
+          {{ customButton(_("End Chat"), color='bg-red-400', hoverColor="bg-red-600", icon_right="fa-solid fa-arrow-right-from-bracket", id='end', classes='w-fit rounded-md !text-white !font-bold') }}
+       </div>
+    </div>
+    <div id="chat-messages" class="h-full w-full flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+      {% for message in messages  %}
+         {% if message.sender == current_user.id %}
+            {{ chatBlock(is_sender=true, user=current_user, text=message.message) }}
+         {% else %}
+            {{ chatBlock(is_sender=false, user=recipient, text=message.message) }}
+         {% endif %}
+      {% endfor %} 
+
+    </div>
+    <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+       <div class="relative flex">
+          <input id="chat-input" type="text" placeholder='{{ _("Write your message!") }}' class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3">
+          <div class="absolute right-0 items-center inset-y-0 hidden sm:flex">
+            
+             <button id="send" type="button" class="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
+                <span class="font-bold">{{ _("Send") }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 ml-2 transform rotate-90">
+                   <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                </svg>
+             </button>
+          </div>
+       </div>
+    </div>
+ </div>
+</div>
+ 
+ <style>
+ .scrollbar-w-2::-webkit-scrollbar {
+   width: 0.25rem;
+   height: 0.25rem;
+ }
+ 
+ .scrollbar-track-blue-lighter::-webkit-scrollbar-track {
+   --bg-opacity: 1;
+   background-color: #f7fafc;
+   background-color: rgba(247, 250, 252, var(--bg-opacity));
+ }
+ 
+ .scrollbar-thumb-blue::-webkit-scrollbar-thumb {
+   --bg-opacity: 1;
+   background-color: #edf2f7;
+   background-color: rgba(237, 242, 247, var(--bg-opacity));
+ }
+ 
+ .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
+   border-radius: 0.25rem;
+ }
+ </style>
+ 
+ <script>
+
+   document.addEventListener('DOMContentLoaded', () => {
+      const room = "{{ room }}";
+      const user_id = "{{ current_user.id }}";
+      initChat(room, user_id);
+   });
+
+   
+
+
+
+
+ </script>
+{% endblock page_content %}

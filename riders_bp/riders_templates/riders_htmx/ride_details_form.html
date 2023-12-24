@@ -1,0 +1,58 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'components/general.html' import customButton  %}
+{% from 'icons.html' import arrow, calendar, hourglass, credit_card, clock  %}
+
+<form 
+method="POST"
+hx-vals='{"pickup": "{{pickup}}", "dropoff": "{{dropoff}}" }'
+action="{{ url_for('inter.riders.details') }}"
+hx-target="#rider-form"
+hx-swap="outerHTML"
+hx-select="#rider-form"
+hx-push-url="false" 
+id="rider-form" 
+class="h-fit">
+    {{ form.csrf_token() }}
+
+    <div class="flex justify-between py-2">
+
+        {{ customButton('', variant='light', classes=" rounded-full h-8 w-8 items-center justify-center", icon_svg=arrow(width=12, height=12, classes="rotate-180") , as_submit=false, hx_props={
+            'hx-get': url_for('inter.riders.index', pickup=pickup, dropoff=dropoff),
+            'hx-target': '#rider-form',
+            'hx-swap': 'outerHTML',
+            'hx-select': '#rider-form',
+        }) }}
+        
+        {{ customButton(_('Clear'), variant='super-light', size="sm", classes='w-fit rounded-md',id="clear-pickup-details", onclick="document.querySelector('#pickup_time').selectedIndex=0", as_submit=false) }}
+    </div>
+
+
+    <h2 class="font-bold text-2xl">{{ _("When do you want to be picked up?") }}</h2>
+    <div class="flex flex-col gap-4 mt-4 overflow-y-scroll max-h-[40vh]">
+        {# changeDate event is trigerred by kodev-flowbite-datepicker, only once that 
+            event is triggered , the request to update the avalable times is sent  #}
+
+        {{ customInput(form.pickup_date, props={'size':'lg'}, left_icon=calendar(),
+             hx_props={
+                'hx-post': url_for('inter.riders.update_times'),
+                'hx-trigger':'changeDate',
+                'hx-consume':'',
+                'hx-swap':'outerHTML', 
+                'hx-target':'#pickup_time',
+                'hx-select':'#pickup_time',
+                'hx-include': 'closest form',
+            } )  }}
+        {{ customInput(form.pickup_time, props={'size':'lg', 'classes':'w-full'}, left_icon=clock())  }}
+        <span class="flex  items-center gap-x-6 py-3 px-6 text-sm text-gray-400"><span class="text-black">{{ calendar(width=16, height=16, view=24) }}</span>{{ _("Choose your exact pickup time up to 90 days in advance") }}</span>
+        <span class="flex  items-center gap-x-6 py-3 px-6 text-sm text-gray-400"><span class="text-black">{{ hourglass(width=16, height=16, view=24) }}</span>{{ _("Extra wait time included to meet your ride") }}</span>
+        <span class="flex  items-center gap-x-6 py-3 px-6 text-sm text-gray-400"><span class="text-black">{{ credit_card(width=16, height=16, view=24) }}</span>{{ _("Cancel at no charge up to 60 minutes in advance") }}</span>
+
+    </div>
+
+
+    <span>
+        {{ customInput(form.next, props={'size':'lg'})  }} 
+    </span>
+    
+</form>
+

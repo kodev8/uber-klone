@@ -1,0 +1,224 @@
+{% from 'account_components.html' import manageNavbar, manageSubnavTab, manageAction with context %}
+{% from 'icons.html' import plus, caret_down %}
+{% from 'components/users.html' import rideOption %}
+{% from 'components/general.html' import customButton %}
+{% from 'components/forms.html' import customInput %}
+
+
+{% extends 'account_layout.html' %} 
+
+  {% block page_content %}
+        
+        <div id='subnav' class="col-span-full  flex relative border-b-4 border-gray-200 gap-6
+                md:col-start-1 md:col-end-4 md:flex-col md:border-transparent md:gap-0">
+
+                {# un-url-marker #}
+                <div id="subnav-indicator" class="absolute  bg-black top-[100%]  w-28 h-1 md:top-0 md:w-2  md:h-14
+                {% if request.endpoint=='inter.account.manage' %}
+                account-manage
+                {% elif request.endpoint == 'inter.account.security' %}
+                    account-security
+                {% elif request.endpoint in ['inter.account.view_driver_profile', 'inter.account.setup_driver_profile'] %}
+                    account-drive
+                {% endif %}
+                "
+                ></div>
+            {{ manageSubnavTab(_('Account Info'), 'inter.account.manage') }}
+            {{ manageSubnavTab(_('Security'), 'inter.account.security') }}
+            {{ manageSubnavTab(_('Drive'), 'inter.account.view_driver_profile') }}
+            {{ manageSubnavTab(_('Home'), 'inter.general.index', local=false) }}
+
+        </div>
+
+        <div id="subnav-content" class="flex flex-col gap-4 py-3 px-4 md:px-0 md:col-span-5 md:col-start-4 " >
+
+            
+            {% if request.endpoint == 'inter.account.manage' %}
+                
+                <h1 class="font-bold text-4xl">{{ _("Account Info") }}</h1>
+
+                {% if not current_user.profile_pic %}
+  
+                  <form method="POST" action="{{ url_for('inter.account.update_profile_pic') }}"
+                  hx-target-4*="#messages"
+                  hx-swap="innerHTML"
+                  enctype="multipart/form-data"
+                  hx-trigger="change from:#photo"
+                  hx-push-url="false"
+                  >
+                  {{ photo_form.csrf_token() }}
+
+  
+                    <label class="cursor-pointer">
+  
+                      <!-- <div class="rounded-[50%] h-20 w-20 bg-black text-white  place-self-center flex items-center justify-center">
+                        <span class="font-medium text-lg">{{ current_user.fname[0] }} {{ current_user.lname[0] }}</span>
+                      </div> -->
+                      <img
+                      class="rounded-[50%] h-20 w-20 object-cover  place-self-center flex items-center justify-center"
+                      src="{{ url_for('static', filename='assets/default-user.jpeg') }}"
+                      alt=""
+                      />
+  
+                        {{ photo_form.photo() }}
+
+                      
+                  </label>
+                </form>
+                    
+  
+                {% else %}
+
+      
+                    <div id="profile_photo"
+                    class="relative rounded-[50%]">
+                      
+                      
+                      <form
+                      method="POST" action="{{ url_for('inter.account.update_profile_pic') }}"
+                      hx-target-4*="#messages"
+                      hx-swap="innerHTML"
+                      enctype="multipart/form-data"
+                      hx-trigger="change from:#photo"
+                      hx-push-url="false"
+                      >
+                        {{ photo_form.csrf_token() }}
+                        
+                        <!-- {{ photo_form.photo(class="fa-solid fa-camera absolute z-10 left-[50%] -translate-x-[50%] bottom-0 
+                        cursor-pointer text-blue-300 text-lg hover:text-green-500",
+                                ) 
+                              }} -->
+
+                        <label for="photo">
+                          <img
+                          class="rounded-[50%] h-20 w-20 object-cover  border border-slate-300 place-self-center flex items-center justify-center"
+                          src="{{ url_for('profile_upload', filename=current_user.build_path('profile', 'profile.png')) }}"
+                          alt=""
+                          />
+                          {{ photo_form.photo() }}
+                        </label>
+                        </form>
+                    </div>
+
+                      {{ customButton(_('Remove Photo'),classes='w-fit rounded-lg', hx_props={
+                        'hx-delete':url_for('inter.account.update_profile_pic')
+                      }
+                      
+                      ) }}
+
+                    </span>
+                {% endif %}
+
+
+                <h2 class="font-bold text-2xl">{{ _("Basic Info") }}</h2>
+
+                <div class="flex flex-col gap-3">
+                    {{ manageAction(header=_("Name"), value=current_user.display_name(), predicate=true, url_field='name') }}
+                    {{ manageAction(header=_('Phone Number').capitalize(),value=current_user.phone, predicate=current_user.phone != none, default='Set your phone number', url_field='phone') }}
+                    {{ manageAction(header=_('Email'),value=current_user.email, predicate=true, default='', url_field='email') }}
+                </div>
+
+            {% elif request.endpoint == 'inter.account.security' %}
+
+                <h1 class="font-bold text-4xl">{{ _("Security") }}</h1>
+                <h2 class="font-bold text-2xl">{{ _("Logging in to Uber") }}</h2>
+
+                {{ manageAction(_("Password"), value='••••••••', predicate=current_user.password != none, default='Set up a new password', url_field='password') }}
+
+            {% elif request.endpoint == 'inter.account.setup_driver_profile' %}
+              <h1 class="font-bold text-4xl">{{ _("Set Up Your Driver Profile") }}</h1>
+
+
+              {% if pending %}
+                    <div class="flex flex-col gap-3">
+                      <span class="font-bold text-lg">{{ _("Pending Approval") }}</span>
+                      <span class="text-gray-500">{{ _("Your driver profile is pending approval. You will be notified when it is approved") }}.</span>
+                    </div>
+                    <div class="wrapper">
+                      <div class="circle"></div>
+                      <div class="circle"></div>
+                      <div class="circle"></div>
+                      <div class="shadow"></div>
+                      <div class="shadow"></div>
+                      <div class="shadow"></div>
+                    </div>
+                {% else %}
+                  {% if not current_user.profile_pic %}
+                    <span class="font-bold text-lg">{{ _("Upload your profile picture") }}<a href="{{ url_for('inter.account.manage') }}" 
+                      hx-swap="multi:#subnav-content,#subnav" hx-select="#subnav-content,#subnav"
+                      class="underline text-blue-300 mx-1">{{ _("here") }}</a>{{ _("before proceeding") }}</span>
+                  {% endif %}
+                  <form 
+                  class="grid gap-4"
+                  hx-post="{{ url_for('inter.account.setup_driver_profile') }}" 
+                  hx-target-4*="{% for field in form %}#{{field.id}}-error{% if not loop.last %},{% endif %}{% endfor %},#messages"
+                  hx-swap="innerHTML"
+                  enctype="multipart/form-data"
+                  novalidate="true"
+                  >
+                  <!-- hx-on::after-request="inform(event)" -->
+                   
+                      {{ form.csrf_token() }}
+
+                      {% set props = {"outertext":true, "placeholder":""} %}
+                    <h3 class="font-bold text-xl">{{ _("License Info") }}</h3>
+                      {{ customInput(form.license_number, props=props ) }}
+                      <div class="relative">
+                        {{ customInput(form.license_expiry_date, props=props ) }}
+
+                      </div>
+
+
+                      {{ customInput(form.license_photo) }}
+
+
+                    <h3 class="font-bold text-xl mt-4">{{ _("Vehicle Info") }}</h3>
+                      {{ customInput(form.vehicle_plate, props=props) }}
+                      {{ customInput(form.vehicle_photo) }}
+
+
+                    <h3 class="font-bold text-xl mt-4">{{ _("Select the option which best describes your vehicle") }}</h3>
+
+                    {% for option in options  %}
+                        {{ rideOption(option, is_rider=false) }}
+                    {% endfor %}
+               
+                  {{ customInput(form.send, props={'classes':"form-submitter w-full rounded-lg col-span-full", 'disabled':true, 'size':'lg'}) }}
+              </form>
+              <script>
+                  linkInputsToNext()
+                  Flowbite.initDatepickers()
+              </script>
+              {% endif %}
+
+            {% elif request.endpoint == 'inter.account.view_driver_profile' %}
+              <h1 class="font-bold text-4xl">Your Driver Profile</h1>
+
+
+              <!-- TODO: Extract to macro instead of repeating applications for admin -->
+                  <div class="flex flex-col gap-3">
+                    <span class="font-bold text-lg">{{ _("License Info") }}</span>
+                    <span class="text-gray-500">{{ _("License Number") }}: {{ driver_profile.license_number }}</span>
+                    <span class="text-gray-500">{{ _("License Expiry Date") }}: {{ driver_profile.license_expiry_date }}</span>
+                    <div class="w-full">
+                      <p class="text-gray-500">{{ _("License Photo:") }}</p>
+                     <img  class="rounded-xl max-h-60 mx-auto" src="{{ url_for('inter.account.view_driver_license', driver=current_user.id, file_id=driver_profile.license_photo) }}">
+                    </div>
+
+                    <span class="font-bold text-lg mt-5">{{ _("Vehicle Info") }}</span>
+                    <span class="text-gray-500">{{ _("Vehicle Plate") }}: {{ driver_profile.vehicle_plate }}</span>
+                    <div class="w-full">
+                      <p class="text-gray-500">{{ _("Vehicle Photo") }}: </p>
+                      <img  class="rounded-xl max-h-60 mx-auto" src="{{ url_for('inter.account.view_driver_vehicle',driver=current_user.id, file_id=driver_profile.vehicle_photo) }}">
+                    </div>
+
+                    <span class="font-bold text-lg mt-5">{{ _("Vehicle class") }}</span>
+                    {{ rideOption(ride_option, is_rider=false)}}
+
+                  </div>
+                          
+            {% endif %}
+
+    </div>
+
+{% endblock page_content %}

@@ -1,0 +1,113 @@
+{% from 'components/forms.html' import customInput, inlineError %}
+{% from 'icons.html' import pickup, destination, clock, caret_down, circle_xmark, arrow, person, location, map_location, warning_sign %}
+{% from 'components/general.html' import customButton  %}
+{% from 'components/users.html' import availableRider  with context %}
+
+{% extends 'templates/users_layout.html' %}
+
+{% block page_content %}
+
+    <div id="driver-form" class="rounded-md border-4 border-gray-300 col-span-full lg:col-span-6 p-6 h-fit max-h-screen overflow-auto row-start-2 lg:row-start-1 grid gap-6 ">
+        
+        <h2 class="font-bold text-2xl">{{ _("Find Riders") }}</h2>
+
+        <div id="available-riders" class="flex flex-col">
+
+        {% if available_riders %}
+            {% for rider in available_riders  %}
+             {{ availableRider(rider) }}
+            {% endfor %}
+        {% else %}
+            <div id="no-riders" class="flex flex-col gap-4 mt-4">
+                <span class="text-gray-400">{{ _("No available riders at this moment") }}</span>
+            </div>
+        {% endif %}
+
+        </div>
+    </div>
+
+    <div id="map-container" class="col-span-full  lg:col-span-6 border border-gray-400 p-4 "></div>
+
+
+<script>
+    handleCustomInputs()
+    initMap(false)
+    
+    var socket = io.connect(window.location.origin + '/drivers', {'transports': ['websocket']});
+
+    socket.on('connect', function() {
+        socket.emit('join', {
+            room: '{{ ride_option }}',
+        });
+    });
+
+    socket.on('disconnect', function() {
+        console.log('Disconnected!');
+    });
+
+    // leave room when navigating away
+
+    function leaveRoom() {
+        console.log('leaving room')
+        socket.emit('leave', {
+            room: '{{ ride_option }}',
+        });
+    }
+
+    window.onbeforeunload =  leaveRoom
+
+
+    if (window.onpopstate) {
+        let oldHandler = window.onpopstate;
+        window.onpopstate = function(event) {
+            oldHandler(event);
+            leaveRoom()
+        };
+    }else{
+        window.onpopstate = leaveRoom
+    }
+
+
+    socket.on('ride-request', function(data){
+        // check if no riders
+        if (document.querySelector('#no-riders')) {
+            document.querySelector('#no-riders').remove()
+        }
+
+        // create rider
+        let availableRider = htmx.parseHTML(data.template, 1)
+        console.log(availableRider)
+        htmx.process(availableRider)
+        document.querySelector('#available-riders').appendChild(availableRider)
+      
+    })
+
+    function handleRemoval(data){
+        let ride_request = document.getElementById(data.ride_request_id)
+        ride_request?.remove()
+        
+        // check if no riders
+        if (document.querySelectorAll('.available-rider').length === 0) {
+            document.querySelector('#available-riders').innerHTML = `
+                <div id="no-riders" class="flex flex-col gap-4 mt-4">
+                    <span class="text-gray-400">${data.message}</span>
+                </div>
+            `
+        }
+    }
+
+    socket.on('cancel-ride', function(data){
+        // console.log(data)
+        handleRemoval(data)
+        clearMap()
+    })
+
+    socket.on('ride-accepted', function(data){
+        handleRemoval(data)
+        clearMap()
+    })
+
+</script>
+
+
+{% endblock page_content %}

@@ -1,0 +1,41 @@
+{% macro modalBG(show, content=none, swap=false, back_to=none, title='', standalone=none) -%}
+{% from 'icons.html' import  xmark %}
+    
+<div id="modal-bg"
+ hx-get="{{ url_for('close_modal') }}" hx-trigger="click" hx-target="this" hx-swap="outerHTML" 
+ {% if back_to -%} hx-replace-url='{{ back_to }}' {%- endif %}
+class="flex flex-col justify-center items-center h-screen w-screen bg-slate-200 absolute overflow-hidden
+backdrop-blur-xl top-0 border-outset {% if not show -%} hidden {%- endif %}" {% if swap -%}
+    hx-swap-oob="true"
+{%- endif %}>
+{% if content -%}
+  {{ modal(content, back_to, title) }}  
+{% elif standalone %}
+  {{ standalone }}
+{%- endif %}
+</div>
+{%- endmacro %}
+
+
+{% macro modal(content, back_to, title) -%}
+    <div class="modal min-w-[310px] lg:min-w-[40%] bg-white" onclick="event.stopPropagation()">
+
+      {# if there is a tile render the header container with a border #}
+      <div class="flex items-center justify-center  {% if title %} border-b-2 border-gray-300 {% endif %}">
+
+        <span hx-get="{{ url_for('close_modal') }}" hx-trigger="click" hx-target="#modal-bg" hx-swap="outerHTML" 
+        {% if back_to -%} hx-replace-url='{{ back_to }}' {%- endif %}
+         class="fa-solid fa-xmark absolute top-2 right-2 text-sm text-black rounded-[50%] w-8 h-8  z-40 flex items-center justify-center hover:bg-slate-200 cursor-pointer">
+       </span>
+
+      {% if title %}
+        <h4 class="col-span-full py-3 modal-header">
+            {{ title }}
+        </h4>
+      {% endif %}
+      
+      </div>
+        
+        {{ content }}
+    </div>
+{%- endmacro %}

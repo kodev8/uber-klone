@@ -1,0 +1,147 @@
+{% from './components/general.html' import customButton %}
+
+
+<!-- INLINE ERROR -->
+{% macro inlineError(fieldID, text, swap=false, icon=false) -%}
+  <span id="{{ fieldID }}-error" {% if swap %} hx-swap-oob="outerHTML" {% endif %} class="inline-error flex items-center top-[100%] text-red-500 font-medium text-xs text-justify"> 
+  {% if icon %}
+    <i class="fa-solid fa-circle-exclamation mr-1"></i>
+  {% endif %}
+  {{ text }}
+</span>
+{%- endmacro %}
+
+<!-- CUSTOM INPUT -->
+{% macro customInput(field, props={classes:"w-full"}, left_icon=none, right_icon=none,hx_props={}) -%} 
+
+  {% if field.type == 'CSRFTokenField' %} 
+
+    {{ field }} 
+    
+    {% if field.errors %}
+      <div>You have submitted an invalid CSRF token</div>
+    {% endif %} 
+    
+  {% elif field.type == 'HiddenField' %}
+
+     {{ field }} 
+
+  {% elif field.type == 'SubmitField' %}
+
+
+    {{ customButton(props.get('text') or field.label.text, as_submit=true, size=props.get('size'), classes=props.get('classes'), disabled=props.get('disabled') ) }}
+
+  {% elif field.type == 'FileField' %}
+    <div>
+      <p>{{ field.label.text }}</p>
+      {{ field(class="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter dark:file:bg-white/30 dark:file:text-white file:py-3 file:px-5 file:hover:bg-blue-500/75 file:hover:bg-opacity-10 focus:border-blue-500/75 active:border-blue-500/75 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:focus:border-blue-500/75") }}
+    </div>
+
+    {% else %} 
+
+    {% set classes = (props.get('classes') or "") + " " + "custom-input-x rounded-lg h-full outline-none border-2 border-transparent p-2 bg-gray-100 focus:bg-gray-50/50 focus:border-slate-800 transition-colors" %} 
+
+    {% if field.type == 'TextAreaField' %} 
+      {% set classes = classes + " resize-none no-scrollbar p-6" %} 
+      {% set divClasses = "min-h-[100px]" %} {% set labelClasses = labelClasses + " top-3" %}
+    {% elif field.type == "PasswordField" %}
+      {% set classes = classes + " pr-8" %} 
+    
+    {% else %}
+        {% if left_icon %}
+          {% set classes = classes + " pl-8 "  %}
+      {% endif %}
+
+        {% if right_icon%}
+            {% set classes = classes + " pr-8" %} 
+        {% endif %}
+
+    {% endif %}
+
+    {% if field.type == 'CustomDateField' %}
+      {% set classes = classes + " caret-transparent" %}
+    {% endif %}
+
+      <div class="relative custom-input-group {% if props.get('span_full') %} col-span-full {% endif %}">
+            {% if props.outertext %}
+              {{ field.label(class="mb-2") }}
+           {% endif %}
+        <div class="relative {{ divClasses }} grid items-center h-12 rounded-lg bg-transparent text-sm outline-none overflow-hidden">
+            
+            {{ field(class=classes , placeholder=props.get('placeholder', field.label.text) , autocomplete="off", **hx_props)}} 
+          
+          {% if left_icon %}
+              <span class="absolute left-3">{{ left_icon }}</span>
+          {% endif %}
+
+          {% if field.type == 'PasswordField' %}
+            <i class="fa-regular fa-eye-slash eye-icon absolute right-2 cursor-pointer"></i>
+          {% elif right_icon %}
+              <span class="absolute right-4">{{ right_icon }}</span>
+          {% endif %}
+
+        
+
+          {% if field.type == 'TextAreaField' %}
+            <div class="justify-self-end p-2">{{ textCount(field,field.validators[1].max) }}</div>
+          {% endif %}
+        </div>
+
+      {{ inlineError(field.id) }}
+      </div>
+
+
+
+  {% endif %} 
+{%- endmacro %}
+
+
+<!-- Unused -->
+<!-- GENERIC MODAL FORM used for reset passsword, update email -->
+{% macro genericModalForm(form, submit_text, submit_action) -%}
+  <form 
+  novalidate
+  action="{{ submit_action }}"
+  method="POST"
+  hx-target-4*="{% for field in form %}#{{field.id}}-error{% if not loop.last %},{% endif %}{% endfor %},#messages"
+  hx-target="#messages"
+  hx-swap="innerHTML"
+  class="grid sm:grid-cols-1 gap-y-4 gap-x-2 p-4 rounded-md">
+
+
+    {% for field in form -%} 
+      {{ customInput(field) }}
+    {% endfor -%}
+
+  </form>
+
+  <script>
+    handleCustomInputs()
+  </script>
+
+{%- endmacro %}
+
+{% macro fieldAdder(title) %}
+
+  <button onclick="addField(this, '{{ title }}')" type="button" class="bg-slate-200 h-8 w-8 flex items-center justify-center
+  cursor-pointer transition-colors hover:bg-green-300 
+  disabled:bg-slate-200/80 disabled:text-white disabled:cursor-not-allowed rounded-[50%] ">
+    <i   title="Add another {{ title }}!" class="fa-solid fa-plus"></i>
+  </button>
+  
+{% endmacro %}
+
+<!-- TEXT COUT FOR TEXT AREAS -->
+{% macro textCount(field, max) -%}
+
+  <span class="text-xs text-slate-400 flex"><span class="counter">{% if field.data %}
+    {{ field.data | length }} {%else%} 0
+  {% endif %}</span>/{{ max }}</span>
+
+{%- endmacro %}
+
+
+  <!-- <script>
+    var max_value = parseInt("{{ max }}");
+    updateLength(max_value);
+  </script> -->

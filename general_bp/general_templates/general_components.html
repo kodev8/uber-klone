@@ -1,0 +1,244 @@
+{% from 'components/general.html' import customButton %}
+{% from 'icons.html' import home, car_front_outlned, steering_wheel, restaurant, xmark, menu_bar, uber, producs, caret_down, languages, products, arrow, exit %}
+
+{% macro navbar() %}
+    
+    <nav id="navbar" class="w-full col-span-full relative flex px-6 sm:px-8 lg:px-16 py-4 justify-between items-center bg-black font-medium"
+        >
+
+        <div id="left-nav" class="flex gap-x-2 items-center">
+            <a href="{{ url_for('inter.general.index') }}">{{ uber() }}</a>
+
+            {% if not is_admin %}
+            
+                
+                {{ customButton(_("Company"), classes='rounded-full px-4 hidden lg:flex', icon_svg_right=caret_down() ) }}
+                <a>{{ customButton(_("Safety"), classes='rounded-full px-4 hidden lg:flex ') }}</a>
+                <a>{{ customButton(_("Help"), classes='rounded-full px-4 hidden lg:flex') }}</a>
+
+            {% endif %}
+
+        </div>
+
+        <div id="right-nav" class="flex gap-x-2 items-center">
+            <span 
+                >
+                {{ customButton(g.get('lang', 'en').upper(), classes='rounded-full px-4 hidden lg:flex',icon_svg=languages(), 
+                hx_props={
+                "hx-get":url_for('inter.general.nav_drawer',content='select-language') , 
+                "hx-target":"#drawer",
+                "hx-trigger":"click[checkDrawerContent('select-language')]",
+                "hx-vals":"js:{opened: checkDrawer()}",
+                "hx-swap":"outerHTML"}) }}
+            </span>
+
+            {% if not is_admin %}
+                
+
+                <div onclick="dth(this, this.querySelector('#products-dropdown')); closeDrawer()" class="relative h-full">
+                    <span class="">{{ customButton(_("Products"), classes='rounded-full px-4 hidden lg:flex', icon_svg=products() ) }}</span>
+                    <div id="products-dropdown" class="absolute top-[3.2rem] right-0 min-w-[150px] invisible bg-white z-20 rounded-b-md overflow-hidden">
+                        <div class="flex flex-col gap-y-2">
+                            <a href="{{ url_for('inter.general.index') }}" class="flex gap-x-6 py-3 px-4 hover:bg-gray-200 hover:cursor-pointer"><span>{{ home(width=16, height=16, view=24) }}</span>{{ _("Home") }}</a>
+                            <a href="{{ url_for('inter.riders.index') }}" class="flex gap-x-6 py-3 px-4 hover:bg-gray-200 hover:cursor-pointer"><span>{{ car_front_outlned(width=16, height=16, view=24) }}</span>{{ _("Ride") }}</a>
+                            <a href="{{ url_for('inter.drivers.index') }}" class="flex gap-x-6 py-3 px-4 hover:bg-gray-200 hover:cursor-pointer"><span>{{  steering_wheel(width=16, height=16, view=24) }}</span>{{ _("Drive") }}</a>
+                            <a hx-get="{{ url_for('not_implemented') }}" class="flex gap-x-6 py-3 px-4 hover:bg-gray-200 hover:cursor-pointer"><span>{{ restaurant(width=16, height=16, view=24) }}</span>{{ _("Eat") }}</a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
+        {% if current_user.is_authenticated %}
+
+            {% if is_admin %}
+            {# TODO: clean up repition #}
+            <div id="admin-info" class="hidden lg:flex items-center gap-x-2 relative h-full ">
+                {{ customButton(current_user.fname, variant="light", classes="rounded-full", id="user-button") }}  
+                <span class="text-white">{{ caret_down() }}</span>
+    
+    
+                <div id="admin-dropdown" class="absolute top-[100%] right-0 invisible overflow-hidden pt-3 z-10 shadow-lg rounded-md bg-transparent text-black">
+                    <div class="flex flex-col gap-y-2 min-w-[200px] bg-white z-20 justify-center rounded-md [&>*:first-child]:rounded-t-md [&>*:last-child]:rounded-b-md " >
+                        <span class="flex gap-x-6 py-3 px-4  hover:cursor-pointer broder-b border-b-gray-200">
+                            <div class="rounded-full"> {{current_user.fname[0] + ' ' + current_user.lname[0] }} </div>
+                        {{current_user.display_name()}}
+                        </span>
+                        <button hx-delete="{{ url_for('inter.auth.logout') }}" class="flex items-center gap-x-6 py-3 px-4 hover:cursor-pointer"><span>{{ exit() }}</span>{{ _("Sign Out") }}</a>
+                    </div>
+                </div>
+            </div>
+    
+            <script>
+                linkHoverShow(document.querySelector("#admin-info"), document.querySelector('#admin-dropdown'))
+            </script>
+
+            {% else %}
+
+                {{ customButton(current_user.fname, variant="light", classes="rounded-full", icon_svg_right=caret_down(), id="user-button", 
+                hx_props={
+                    "hx-get":url_for('inter.general.nav_drawer',content='logged-in'),
+                    "hx-target":"#drawer",
+                    "hx-trigger":"click[checkDrawerContent('logged-in')]",
+                    "hx-vals":"js:{opened: checkDrawer()}",
+                    "hx-swap":"outerHTML",
+                }) }}
+
+            {% endif %}
+           
+
+        {% else %}
+                {{ customButton(_("Log In"), classes='rounded-full px-4', 
+                hx_props={
+                    "hx-get":url_for('inter.general.nav_drawer',content='login'),
+                    "hx-target":"#drawer",
+                    "hx-trigger":"click[checkDrawerContent('login')]",
+                    "hx-vals":"js:{opened: checkDrawer()}",
+                    "hx-swap":"outerHTML",
+                }
+                )}}
+                
+            {{ customButton(_("Sign Up"), color="bg-white", hoverColor="bg-gray-200", classes='rounded-full px-4',
+             hx_props={
+                "hx-get":url_for('inter.general.nav_drawer',content='sign-up') ,
+                "hx-target":"#drawer",
+                "hx-trigger":"click[checkDrawerContent('sign-up')]",
+                "hx-vals":"js:{opened: checkDrawer()}",
+                "hx-swap":"outerHTML",
+             }
+             ) }}
+        {% endif %}
+            <span class="lg:hidden text-white">{{ menu_bar(fill="#FFF") }}</span>
+
+        </div>
+<!--         
+        this.parentElement.querySelector('.h-0').classList.toggle('!h-[1200px]');
+        this.parentElement.querySelector('.h-0').classList.toggle('!overflow-y-scroll');
+        this.parentElement.querySelector('.h-0').classList.toggle('!opacity-100');
+        document.body.classList.toggle('overflow-hidden');")  -->
+
+        <!-- dropdown container -->
+        <div id="drawer" class="w-full h-0 opacity-0 absolute left-0 z-10 bg-white top-[100%] transition-all duration-700 overflow-scroll"></div>
+        <!-- end dropdown container -->
+       
+    </nav>     
+
+{% endmacro %}
+
+
+{% macro navDrawer(content, opened) %}
+    <div id="drawer" data-content="{{content}}" class="w-full grid lg:grid-cols-12
+    {% if not opened %} h-0 opacity-0 {% else %} !h-screen !opacity-100 {% endif %} 
+    absolute left-0 z-10 bg-white top-[100%] pb-16 px-8 transition-all duration-700 overflow-scroll"
+    classes="add !h-screen & add !opacity-100" 
+    >
+        <div class="col-span-full lg:pt-24 flex justify-end self-end">
+            <span onclick="closeDrawer()" 
+            class="rounded-full p-4 hover:bg-gray-300 cursor-pointer">
+            {{ xmark(width=42,  height=42, view=24) }}
+            </span>
+        </div>
+
+        {# if the current user is not logged in #}
+
+        {% if current_user.is_anonymous and content == 'sign-up' %}
+            
+        {{ navdrawerContainer(_("Sign up to drive & deliver"), _("Sign Up to ride"), containerClasses="p-10", 
+        ref1=url_for('inter.drivers.index', state=DRIVER_STATE), 
+        ref2=url_for('inter.auth.auth_flow'),) }}
+
+        {{ navdrawerContainer(_("Sign up to order delivery with Uber Eats"), 
+        _("Sign Up to order delivery with Uber Eats"), 
+        ref1=url_for('not_implemented'),
+        ref2=url_for('not_implemented'),
+        containerClasses="p-10"
+        
+        ) }}
+            
+
+        {% elif current_user.is_anonymous and content == 'login' %}
+            {{ navdrawerContainer(_("Sign in to drive & deliver"), 
+            _("Sign in to ride"), 
+            ref1=url_for('inter.drivers.index', state=DRIVER_STATE),
+            ref2=url_for('inter.auth.auth_flow'),
+            containerClasses="p-10") }}
+            {{ navdrawerContainer(_("Sign in to order delivery with Uber Eats"), _("Sign in to order delivery with Uber Eats"), containerClasses="p-10", ref1=url_for('inter.auth.auth_flow'),
+            ref2=url_for('inter.auth.auth_flow'),) }}
+
+        {% elif current_user.is_authenticated and content == 'logged-in' %}
+            {{ navdrawerContainer(_("Drive & deliver"), 
+            _("Ride with uber"), 
+            ref1=url_for('inter.drivers.index'),
+            ref2=url_for('inter.riders.index'),
+            containerClasses="p-10") }}
+
+            {{ navdrawerContainer(_("Order delivery with Uber Eats"), _("Uber for Business"), containerClasses="p-10",
+             ref1=url_for('not_implemented'),
+             ref2=url_for('not_implemented')) }}
+
+            {{ navdrawerContainer(_("Manage Account"), ref1=url_for('inter.account.manage') ) }}
+
+        {% elif content == 'select-language' %}
+
+        <div class="px-12 col-span-6">
+            <h1 class="font-bold text-6xl mb-12">{{ _("Select your language") }}</h1>
+            <form
+            method="POST"
+            hx-trigger="click from:[name='lang']"
+            action="{{ url_for('set_lang') }}"
+             class="flex flex-wrap gap-4">
+             
+                <label class="bg-gray-100 pl-6 pr-12 py-4 rounded-lg text-xl">{{ _("English") }}
+                    <input type="radio" name="lang" value="en" class="hidden" {% if g.get('lang', 'en') == 'en' %} checked {% endif %}/>
+                </label>
+                <label class="bg-gray-100 pl-6 pr-12 py-4 rounded-lg text-xl">{{ _("French") }}
+                    <input type="radio" name="lang" value="fr" class="hidden" {% if g.get('lang', 'en') == 'fr' %} checked {% endif %}/>
+                </label>
+                <label class="bg-gray-100 pl-6 pr-12 py-4 rounded-lg text-xl">{{ _("Spanish") }}
+                    <input type="radio" name="lang" value="es" class="hidden" {% if g.get('lang', 'en') == 'es' %} checked {% endif %}/>
+                </label>
+                <label class="bg-gray-100 pl-6 pr-12 py-4 rounded-lg text-xl">{{ _("German") }}
+                    <input type="radio" name="lang" value="de" class="hidden" {% if g.get('lang', 'en') == 'de' %} checked {% endif %}/>
+                </label>
+
+            </form>
+        </div>
+
+            
+        {% endif %}
+                
+    </div>
+    
+{% endmacro %}
+
+
+{% macro navdrawerContainer(text1,text2,ref1="#", ref2="#",containerClasses="p-16") %}
+
+    <!-- <div class="flex flex-wrap col-span-full w-full {{ containerClasses }} sm:gap-8 bg-white"> -->
+        
+        {% if text1 %}
+            
+        <a href="{{ ref1 }}" hx-on::after-request="restoreBody()" {% if ref1==url_for('not_implemented') %} hx-push-url='false' {% endif %}
+        class="py-20 p-10 lg:py-12 flex items-center col-span-full lg:col-start-1 lg:col-span-5  min-w-[300px] justify-between border-b border-b-black">      
+            <h2 class="font-bold text-5xl">{{ text1 }}</h2>
+            <span>{{ arrow(width=32, height=32, view=24) }}</span>
+        </a>
+
+        {% endif %}
+
+        {% if text2 %}
+        
+        <a href="{{ ref2 }}" hx-on::after-request="restoreBody()" {% if ref2==url_for('not_implemented') %} hx-push-url='false' {% endif %}
+        class="py-20 p-10 lg:py-12 flex items-center col-span-full lg:col-start-7 lg:col-span-5   min-w-[300px] justify-between border-b border-b-black"
+        >      
+            <h2 class="font-bold text-5xl">{{ text2 }}</h2>
+            <span>{{ arrow(width=32, height=32, view=24) }}</span>
+        </a>
+
+        {% endif %}
+
+
+    <!-- </div> -->
+    
+{% endmacro %}

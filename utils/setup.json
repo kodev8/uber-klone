@@ -1,0 +1,84 @@
+{
+    "ride_options": [
+        {
+            "name": "Green",
+            "id": "uber-green",
+            "ride_type": "recommended",
+            "image": "green.png",
+            "base_fare": 5.0,
+            "fare_rate": 1.5,
+            "time_rate": 0.2,
+            "capacity":4
+        },
+        {
+            "name": "UberX",
+            "id": "uber-x",
+            "ride_type": "recommended",
+            "image": "uberx.png",
+            "base_fare": 7.0,
+            "fare_rate": 2.0,
+            "time_rate": 0.3,
+            "capacity":4
+        },
+        {
+            "name": "Taxi",
+            "id": "uber-taxi",
+            "ride_type": "recommended",
+            "image": "taxi.png",
+            "base_fare": 6.0,
+            "fare_rate": 1.8,
+            "time_rate": 0.25,
+            "capacity":4
+        },
+        {
+            "name": "UberBLACK",
+            "id": "uber-black",
+            "ride_type": "popular",
+            "image": "uberblack.png",
+            "base_fare": 10.0,
+            "fare_rate": 3.5,
+            "time_rate": 0.5,
+            "capacity":4
+        },
+        {
+            "name": "Comfort",
+            "id": "uber-comfort",
+            "ride_type": "popular",
+            "image": "comfort.png",
+            "base_fare": 8.0,
+            "fare_rate": 2.5,
+            "time_rate": 0.4,
+            "capacity":4
+        },
+        {
+            "name": "Van",
+            "id": "uber-van",
+            "ride_type": "popular",
+            "image": "van.png",
+            "base_fare": 9.0,
+            "fare_rate": 3.0,
+            "time_rate": 0.45,
+            "capacity":6
+        },
+        {
+            "name": "Uber Moto",
+            "id": "uber-moto",
+            "ride_type": "more",
+            "image": "moto.png",
+            "base_fare": 4.0,
+            "fare_rate": 1.2,
+            "time_rate": 0.15,
+            "capacity":1
+        },
+        {
+            "name": "ACCESS",
+            "id": "uber-access",
+            "ride_type": "more",
+            "image": "access.png",
+            "base_fare": 6.5,
+            "fare_rate": 2.2,
+            "time_rate": 0.35,
+            "capacity":4
+        }
+    ]
+}

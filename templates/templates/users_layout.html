@@ -1,0 +1,22 @@
+{% from 'components/users.html' import navbar %}
+
+{% extends 'templates/base.html' %} 
+
+  {% block content %}
+
+  <div id="main" class="w-full h-full grid grid-rows-[auto_1fr]" >
+    
+    {{ navbar() }}
+
+    {# one row for certain pages #}
+    
+    <div id="page-content" hx-swap="outerHTML show:window:top" class="w-full h-full grid grid-cols-12 {% if not onerow %} grid-rows-2 {% endif %}lg:grid-rows-1 relative px-6 pt-6 gap-8">
+      {% block page_content -%}
+      
+      {%- endblock page_content %}
+    </div>
+  <!-- end page content -->
+  </div>
+
+
+{% endblock content %}
