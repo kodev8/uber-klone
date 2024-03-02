@@ -1,5 +1,5 @@
 {% from 'components/forms.html' import customInput, inlineError %}
-{% from 'icons.html' import arrow, credit_card, tag, road, car_front, clock, paper_plane, destination, pickup, paypal %}
+{% from 'icons.html' import arrow, credit_card, tag, road, car_front, clock, paper_plane, destination, pickup, paypal, cash %}
 {% from 'components/general.html' import customButton, separator  %}
 {% from 'account_components.html' import tripTab %}
 {% set onerow = true %}
@@ -51,8 +51,10 @@
                     <div class="flex items-center">
                         {% if 'card' in trip.formatted_paymethod.lower() %}
                             <span class="pr-4 py-3">{{ credit_card() }}</span>
-                        {% else %}
+                        {% elif 'paypal' in trip.formatted_paymethod.lower() %}
                             <span class="pr-4 py-3">{{ paypal() }}</span>
+                        {% else %}
+                            <span class="pr-4 py-3">{{ cash() }}</span>
                         {% endif %}
 
                         <span>{{ trip.formatted_paymethod }}</span> 

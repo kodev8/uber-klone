@@ -33,6 +33,10 @@ def create_app():
     app.config.from_object(Config)
     # app.testing=FLASK_TESTING
 
+    if app.config['FLASK_ENV'] == 'setup':
+        setup_app()
+        return
+
     # initialize extensions
     db.init_app(app)
     scheduler.init_app(app)

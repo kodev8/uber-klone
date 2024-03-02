@@ -60,11 +60,11 @@ def leave(data):
         roomId = ObjectId(room)
         trip = rider_requests.find_one({'_id':roomId})
         driver = trip['driver_id']
-        base, decimal = trip['driver_price'].split('.')
+        base, decimal = str(trip['driver_price']).split('.')
         if len(decimal) > 2:
             decimal = decimal[:2] # dont round up
         driver_price = float(f'{base}.{decimal}')
-        driver_price = float(trip['driver_price'])
+        # driver_price = float(trip['driver_price'])
         driver_data.update_one({'user_id':driver}, {'$inc':{'bank.balance':driver_price}})
 
         # emit ride complete event to rider and driver
@@ -81,6 +81,7 @@ def leave(data):
         disconnect() 
 
     except Exception as e:
+        print('Error leaving room', e)
         logging.error(f'Error leaving room {e}')
         return
     

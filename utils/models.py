@@ -5,7 +5,7 @@ from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 # from datetime import datetime
 from utils.extensions import db
-from utils.config import ADMIN_PASSWORD
+from utils.config import ADMIN_PASSWORD, EMAIL_SENDER
 
 # USERS
 class User(db.Model, UserMixin):
@@ -76,7 +76,7 @@ class User(db.Model, UserMixin):
         """ create admin user if not exists """
         admin = User.get_by_id(0)
         if not admin:
-            admin = User(id=0, fname='admin', lname='admin', email='admin@kuber.co')
+            admin = User(id=0, fname='admin', lname='admin', email=EMAIL_SENDER)
             admin.set_password(ADMIN_PASSWORD)
             Role._init_roles()
             admin.roles.append(Role.get_by_name('admin'))

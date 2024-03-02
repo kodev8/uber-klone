@@ -6,6 +6,9 @@ Submitted December 2023
 ----------
 
 This project aims to replicate a similar design and functionality of the drive/ride experience of the Uber web application using two main components flask and htmx.
+Here is a link to a deployed demo: https://uber-klone.onrender.com
+
+NB: It it takes some time for the site to load using render. Also, driver applications must be approved by an admin to continue with the driver experience which can take some time.
 
 ## Flask and Htmx
 

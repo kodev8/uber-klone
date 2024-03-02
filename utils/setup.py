@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.mongo import ride_options, payment_methods, cached_geocodes, cached_routes, driver_data, rider_requests, mongo_db
 from utils.extensions import redis_client, db
-from utils.models import User, UserRoles
+from utils.models import User, UserRoles, Role
 from utils.helper import logging
 from flask import Flask
 from utils.config import Config
@@ -19,7 +19,7 @@ def setup_app():
         print('Setting up app...')
 
         # set up ride options
-        with open("setup.json", "r") as read_file:
+        with open("../setup.json", "r") as read_file:
             set_up_json = json.load(read_file)
             # clear ride options
             ride_options.delete_many({})
@@ -47,9 +47,11 @@ def setup_app():
 
         # create admin user
         with app.app_context():
+            db.create_all()
             User.remove_all()
             UserRoles.remove_all()
             User.create_admin()
+            Role._init_roles()
             print('Removed users and created admin')
         
     except Exception as e:

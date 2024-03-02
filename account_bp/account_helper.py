@@ -58,8 +58,10 @@ def send_receipt(trip_id, to, is_update=True):
     # format the payment method details to display on the receipt
     if paymethod_data['method'] == 'paypal':
         trip['formatted_paymethod'] = f'PayPal: {paymethod_data["email"]}'
-    else:
+    elif paymethod_data['method'] == 'card':
         trip['formatted_paymethod'] = 'Card: xxxx-xxxx-xxxx-' + paymethod_data['card_number'][-4:]
+    else:
+        trip['formatted_paymethod'] = 'Cash'
 
 
     # send the receipt to the rider or driver using the send email gmail function
